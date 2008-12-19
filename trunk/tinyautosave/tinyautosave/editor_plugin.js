@@ -168,7 +168,7 @@
 			ed.addCommand("mceTinyAutoSaveRestore", t.__restore);
 
 			// Register restore button
-			ed.addButton("tinyautosave_restore", {
+			ed.addButton("tinyautosave", {
 				title: "tinyautosave.restore_content",
 				cmd: "mceTinyAutoSaveRestore",
 				image: t._restoreImage
@@ -185,7 +185,7 @@
 			
 			// Set initial state of restore button
 			ed.onPostRender.add(function (ed, cm) {
-				ed.controlManager.setDisabled('tinyautosave_restore', !t._canRestore);
+				ed.controlManager.setDisabled('tinyautosave', !t._canRestore);
 			});
 		},
 		
@@ -201,7 +201,7 @@
 
 		clear: function () {
 			/// <summary>
-			/// Removes the autosave content from storage. Disables the 'tinyautosave_restore' toolbar button.
+			/// Removes the autosave content from storage. Disables the 'tinyautosave' toolbar button.
 			/// </summary>
 
 			var ed = this.editor, now = new Date();
@@ -220,7 +220,7 @@
 			}
 
 			this._canRestore = false;
-			ed.controlManager.setDisabled('tinyautosave_restore', true);
+			ed.controlManager.setDisabled('tinyautosave', true);
 		},
 		
 		hasSavedContent: function () {
@@ -275,7 +275,7 @@
 			/// <summary>
 			/// Performs a single, one-time autosave. Checks to be sure there is at least the
 			/// specified minimum number of characters in the editor before saving. Briefly
-			/// animates the toolbar button. Enables the 'tinyautosave_restore' button to indicate
+			/// animates the toolbar button. Enables the 'tinyautosave' button to indicate
 			/// autosave content is available.
 			/// </summary>
 
@@ -306,10 +306,10 @@
 					
 					var cm = ed.controlManager;
 					this._canRestore = true;
-					cm.setDisabled('tinyautosave_restore', false);
+					cm.setDisabled('tinyautosave', false);
 					
 					if (this.showSaveProgress) {
-						var b = tinymce.DOM.get(cm.get('tinyautosave_restore').id), restoreImage = this._restoreImage;
+						var b = tinymce.DOM.get(cm.get('tinyautosave').id), restoreImage = this._restoreImage;
 						b.children[0].src = this._progressImage;
 						window.setTimeout(function () {b.children[0].src = restoreImage;}, 1200);
 					}
@@ -323,7 +323,7 @@
 		
 		_restore: function () {
 			/// <summary>
-			/// Called when the user clicks the 'tinyautosave_restore' button on the toolbar.
+			/// Called when the user clicks the 'tinyautosave' button on the toolbar.
 			/// Replaces the contents of the editor with the autosaved content. If the editor
 			/// contains more than just whitespace, the user is warned and given the option
 			/// to abort. The autosaved content remains in storage.
