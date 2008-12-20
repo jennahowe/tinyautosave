@@ -1,3 +1,4 @@
+#labels Featured
 = TinyAutoSave plugin =
 
 Adds auto-save capability to the TinyMCE text editor to rescue content inadvertently lost.
