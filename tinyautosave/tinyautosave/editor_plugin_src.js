@@ -121,7 +121,7 @@
 		_timer: null,
 		
 		// Initialization - called by TinyMCE
-		init: function(ed, url) {
+		init: function (ed, url) {
 		
 			function createDelegate(instance, method) {
 				/// <summary>
@@ -155,7 +155,7 @@
 			t._intervalSeconds = Math.max(1, parseInt(ed.getParam("tinyautosave_interval_seconds", null) || ed.getParam("tinyautosave_interval", t._intervalSeconds))); // Default = 60 seconds; minimum is 1
 			t._retentionMinutes = Math.max(1, parseInt(ed.getParam("tinyautosave_retention_minutes", null) || ed.getParam("tinyautosave_retention", t._retentionMinutes))); // Default = 20 minutes; minimum is 1
 			t._minLength = Math.max(1, parseInt(ed.getParam("tinyautosave_minlength", t._minLength))); // Default = 50 characters; minimum is 1
-			t.showSaveProgress = ed.getParam("tinyautosave_showsaveprogress", t.showSaveProgress)
+			t.showSaveProgress = ed.getParam("tinyautosave_showsaveprogress", t.showSaveProgress);
 			t._canRestore = t.hasSavedContent();
 			
 			t.__save = createDelegate(t, t._save);
