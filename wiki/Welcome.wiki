@@ -1,5 +1,6 @@
 #summary Welcome to the !TinyAutoSave plugin for TinyMCE.
 
+
 !TinyAutoSave was developed to remove that feeling of dread that often happens when you're editing content on the Web, only to accidentally hit the wrong button and instantly lose everything.
 
 ==Contents==
