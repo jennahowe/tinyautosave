@@ -5,7 +5,7 @@
 
   * 100% client side, no server dependency.
   * 100% !JavaScript.
-  * Wide browser support.
+  * Wide browser support: supports every Web browser that [http://tinymce.moxiecode.com/ TinyMCE] supports.
   * [Functionality Completely automated operation]: runs silently in the background, users don't need to do a thing.
   * [GettingStarted Simple installation], just copy the files and add to your editor config.
   * [Technology Large document support]: more than 90% of all Web browsers in use today can auto-save documents 128K in size or greater - even with cookes disabled.
