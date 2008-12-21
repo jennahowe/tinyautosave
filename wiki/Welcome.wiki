@@ -4,4 +4,4 @@
 
 ==Contents==
 
-  *[GettingStarted Getting Started] - Installation instructions, usage, configuration options
+  * [http://code.google.com/p/tinyautosave/w/GettingStarted Getting Started] - Installation instructions, usage, configuration options
