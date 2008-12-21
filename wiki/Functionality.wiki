@@ -63,4 +63,4 @@ If their Web browser uses cookies for the auto-save storage, then clearing the a
 
 However, the majority of Web browsers do not use cookies for the auto-save storage, so the user may or may not have the ability to clear the auto-saved content, depending on their Web browser's abilities.
 
-(See Technology for a discussion of how different Web browsers store the auto-saved content.)
+(See [Technology] for a discussion of how different Web browsers store the auto-saved content.)
