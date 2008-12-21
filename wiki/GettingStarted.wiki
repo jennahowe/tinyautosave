@@ -1,5 +1,5 @@
 #summary Getting started with the TinyAutoSave plugin for TinyMCE.
-#labels Featured
+#labels Featured,Documentation
 
 =!TinyAutoSave plugin=
 
