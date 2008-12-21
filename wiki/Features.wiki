@@ -6,12 +6,12 @@
   * 100% client side, no server dependency.
   * 100% !JavaScript.
   * Wide browser support.
-  * [Technology Large document support]: more than 90% of all Web browsers in use today can auto-save documents 128K in size or greater - even with cookes disabled.
-  * [GettingStarted Simple installation], just copy the files and add to your editor config.
   * [Functionality Completely automated operation]: runs silently in the background, users don't need to do a thing.
-  * Comes with 12 different animations to choose from.
-  * Automatically switches to `.gif` version of toolbar button for browsers with no `.png` support.
+  * [GettingStarted Simple installation], just copy the files and add to your editor config.
+  * [Technology Large document support]: more than 90% of all Web browsers in use today can auto-save documents 128K in size or greater - even with cookes disabled.
   * Granular [GettingStarted configuration options] for changing how it works.
   * Extensively documented source code, including support for Visual Studio Intellisense.
-  * Released under GNU General Public License, version 3.
+  * Automatically switches to `.gif` version of toolbar button for browsers with no `.png` support.
+  * Comes with 12 different animations to choose from.
   * Minified plugin file shrinks variable names for smallest download.
+  * Released under GNU General Public License, version 3.
