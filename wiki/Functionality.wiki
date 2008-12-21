@@ -1,4 +1,5 @@
 #summary Functionality provided by the plugin.
+#labels Documentation
 
 From the user's perspective, the !TinyAutoSave plugin does two things:
 
