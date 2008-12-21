@@ -1,7 +1,5 @@
 #summary Functionality provided by the plugin.
 
-=Functionality=
-
 From the user's perspective, the !TinyAutoSave plugin does two things:
 
   # Automatically saves the editor contents to a safe (yet undisclosed) location
