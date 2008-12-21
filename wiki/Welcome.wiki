@@ -4,8 +4,8 @@
 
 ==Contents==
 
-[GettingStarted Getting Started] - Installation instructions, usage, configuration options
-
-[Functionality] - Functionality provided by the plugin
-
-[Technology] - A discussion of technology used in the plugin
+  * [Features] - Summary of the plugin features
+  * [GettingStarted Getting Started] - Installation instructions, usage, configuration options
+  * [Functionality] - Functionality provided by the plugin
+  * [Technology] - A discussion of technology used in the plugin
+  * [http://code.google.com/p/tinyautosave/downloads/list/ Downloads] - Grab the latest release
