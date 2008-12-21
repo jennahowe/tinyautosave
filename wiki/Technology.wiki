@@ -1,4 +1,5 @@
 #summary A discussion of technology used in the plugin.
+#labels Documentation
 
 ==Technology used in the !TinyAutoSave plugin==
 
