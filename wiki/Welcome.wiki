@@ -4,8 +4,8 @@
 
 ==Contents==
 
-  [http://code.google.com/p/tinyautosave/wiki/GettingStarted Getting Started] - Installation instructions, usage, configuration options
+  [GettingStarted Getting Started] - Installation instructions, usage, configuration options
 
-  [http://code.google.com/p/tinyautosave/wiki/Functionality Functionality] - Functionality provided by the plugin
+  [Functionality] - Functionality provided by the plugin
 
   [Technology] - A discussion of technology used in the plugin
