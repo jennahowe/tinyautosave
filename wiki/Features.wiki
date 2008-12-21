@@ -1,4 +1,5 @@
 #summary Summary of features.
+#labels Featured
 
 =!TinyAutoSave features=
 
