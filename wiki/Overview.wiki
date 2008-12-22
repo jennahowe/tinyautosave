@@ -1,0 +1,21 @@
+#summary About the TinyAutoSave plugin.
+
+=About !TinyAutoSave=
+
+!TinyAutoSave is a plug-in (component) that extends the functionality of _TinyMCE_, a "rich text" editor offering word processor-like editing abilities within a Web browser.
+
+One of the aspects of TinyMCE that makes it so powerful is its ability to integrate third-party plug-ins.
+
+!TinyAutoSave is one such plug-in, providing a way for users to rescue content they accidentally lost before they could submit or save it.
+
+How does someone "lose" content?  When editing on the Internet, it's very easy!  One click of the "Back" button before you have a chance to click "Submit" and your content is gone forever.
+
+With !TinyAutoSave installed, the user has simply to click the Restore button, and their lost content is rescued.  Instantly, they will be right back where they left off.
+
+The plugin works with every type of Web browser.  In addition, it takes advantage of new features available in modern Web browsers to expand the auto-save storage area, allowing very large documents to be rescued.
+
+TinyAutoSave, is released under the GPL version 3 open-source license, allowing free use and modification of the code (see license.txt included in source package).
+
+Because browser technology continues to improve, and is actually accelerating due to increased competition among the different brands, we expect that we'll be adding new features and storage capabilities over time.  Subscribe to the project feeds and watch these pages for updates.
+
+If you give the plug-in a try, please leave us feedback.  We'd love to hear your experiences and suggestions!
