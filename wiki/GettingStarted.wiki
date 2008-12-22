@@ -37,6 +37,7 @@ tinyMCE.init({
 
 For additional in-depth information about !TinyAutoSave, please review the following topics.
 
+  * [Overview] - Describes the purpose of the plugin
   * [Features] - Summary of the plugin features
   * [Functionality] - Functionality provided by the plugin
   * [Technology] - A discussion of technology used in the plugin
