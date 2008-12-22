@@ -1,4 +1,5 @@
 #summary Welcome to the TinyAutoSave plugin for TinyMCE.
+#labels Featured
 
 *Welcome to the wiki pages for the !TinyAutoSave plugin!*
 
