@@ -1,7 +1,9 @@
-[http://code.google.com/p/tinyautosave/ Home]<br><br>
-[Welcome]<br>
-[Features]<br>
-[GettingStarted Getting Started]<br>
-[Functionality]<br>
-[Technology]<br>
-[http://code.google.com/p/tinyautosave/downloads/list/ Downloads]<br>
+  * [http://code.google.com/p/tinyautosave/ ↑ Project Home]
+  * [Welcome]
+  * [Features]
+  * [GettingStarted Getting Started]
+  * [Functionality]
+  * [Technology]
+  * [http://code.google.com/p/tinyautosave/downloads/list/ Downloads]
+
+  
