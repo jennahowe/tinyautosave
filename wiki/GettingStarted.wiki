@@ -3,8 +3,6 @@
 
 =Getting Started with !TinyAutoSave=
 
-Adds auto-save capability to the TinyMCE text editor to rescue content inadvertently lost.
-
 ==Installation Instructions==
 
   # Download the `.zip` file containing the plugin.  Copy the `tinyautosave` folder and all contents within it into the TinyMCE `plugins` folder.
