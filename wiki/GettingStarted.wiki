@@ -1,7 +1,7 @@
 #summary Getting started with the TinyAutoSave plugin for TinyMCE.
 #labels Featured,Documentation
 
-=!TinyAutoSave plugin=
+=Getting Started with !TinyAutoSave=
 
 Adds auto-save capability to the TinyMCE text editor to rescue content inadvertently lost.
 
