@@ -7,6 +7,8 @@ Included in these pages you'll find installation instructions, product documenta
 
 The sidebar area to the left includes links to all the important wiki pages, including:
 
+[Overview]
+  Describes the purpose and benefits of !TinyAutoSave.
 [Features]
   Highlights the key features of the !TinyAutoSave plugin in a quick at-a-glance view.
 [GettingStarted Getting Started]
