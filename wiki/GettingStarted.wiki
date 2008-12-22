@@ -5,9 +5,11 @@
 
 ==Installation Instructions==
 
-  # Download the `.zip` file containing the plugin.  Copy the `tinyautosave` folder and all contents within it into the TinyMCE `plugins` folder.
-  # Add the plugin to the TinyMCE plugin option list.  For example: `plugins: "tinyautosave"`
-  # Add the button control name to a toolbar row in the theme.  For example: `theme_advanced_buttons1: "tinyautosave,|,cut,copy,paste"`
+1. Download the `.zip` file containing the plugin.  Copy the `tinyautosave` folder and all contents within it into the TinyMCE `plugins` folder.
+
+2. Add the plugin to the TinyMCE plugin option list.  For example: `plugins: "tinyautosave"`
+
+3. Add the button control name to a toolbar row in the theme.  For example: `theme_advanced_buttons1: "tinyautosave,|,cut,copy,paste"`
 
 ==Initialization Example==
 
