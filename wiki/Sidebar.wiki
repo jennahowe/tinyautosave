@@ -1,4 +1,4 @@
-  * [http://code.google.com/p/tinyautosave/ ↑ Project Home]
+  * [http://code.google.com/p/tinyautosave/ ↑ Project Home]<br> <br>
   * [Welcome]
   * [Features]
   * [GettingStarted Getting Started]
