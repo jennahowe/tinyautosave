@@ -26,12 +26,17 @@ tinyMCE.init({
 
 *tinyautosave_interval_seconds* - _Number, default = *60*_
   The number of seconds between automatic saves.  When the editor is first displayed, an autosave will not occur for at least this amount of time.  This option can also be specified as *tinyautosave_interval*.
-
 *tinyautosave_retention_minutes* - _Number, default = *20*_
   The number of minutes since the last autosave that content will remain in the rescue storage space before it is automatically expired.  This option can also be specified as *tinyautosave_retention*.
-
 *tinyautosave_minlength* - _Number, default = *50*_
   The minimum number of characters that must be in the editor before an autosave will occur.  The character count includes all non-visible characters, such as HTML tags.  Although this can be set to 0 (zero), it is not recommended.  Doing so would open the possibility that if the user accidentally refreshes the page, the empty editor contents would overwrite the rescue content, effectively defeating the purpose of the plugin.
-
 *tinyautosave_showsaveprogress* - _Boolean, default = *true*_
   When true, the toolbar button will show a brief animation every time an autosave occurs.
+
+==More information==
+
+For additional in-depth information about !TinyAutoSave, please review the following topics.
+
+  * [Features] - Summary of the plugin features
+  * [Functionality] - Functionality provided by the plugin
+  * [Technology] - A discussion of technology used in the plugin
