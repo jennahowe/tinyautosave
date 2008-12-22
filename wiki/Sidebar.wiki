@@ -4,6 +4,6 @@
   * [GettingStarted Getting Started]
   * [Functionality]
   * [Technology]
-  * [http://code.google.com/p/tinyautosave/downloads/list/ Downloads]
+  * [http://code.google.com/p/tinyautosave/downloads/list Downloads]
 
   
