@@ -28,6 +28,26 @@
 		/// Allows the user to rescue the contents of the last autosave, in case they did not intend to
 		/// navigate away from the current page or the browser window was closed before posting the content.
 		/// </summary>
+		/// <field name="onPreSave" type="String" mayBeNull="false">Name of a callback function that gets called
+		/// before each auto-save is performed. The callback function must return a Boolean value of true if the
+		/// auto-save is to proceed normally, or false if the auto-save is to be canceled. The editor instance
+		/// is the context of the callback (assigned to 'this').</field>
+		/// <field name="onPostSave" type="String" mayBeNull="false">Name of a callback function that gets called
+		/// after each auto-save is performed. Any return value from the callback function is ignored. The editor
+		/// instance is the context of the callback (assigned to 'this').</field>
+		/// <field name="onSaveError" type="String" mayBeNull="false">Name of a callback function that gets called
+		/// each time an auto-save fails in an error condition. The editor instance is the context of the callback
+		/// (assigned to 'this').</field>
+		/// <field name="onPreRestore" type="String" mayBeNull="false">Name of a callback function that gets called
+		/// before a restore request is performed. The callback function must return a Boolean value of true if the
+		/// restore is to proceed normally, or false if the restore is to be canceled. The editor instance is the
+		/// context of the callback (assigned to 'this').</field>
+		/// <field name="onPostRestore" type="String" mayBeNull="false">Name of a callback function that gets called
+		/// after a restore request is performed. Any return value from the callback function is ignored. The editor
+		/// instance is the context of the callback (assigned to 'this').</field>
+		/// <field name="onRestoreError" type="String" mayBeNull="false">Name of a callback function that gets called
+		/// each time a restore request fails in an error condition. The editor instance is the context of the
+		/// callback (assigned to 'this').</field>
 		/// <field name="showSaveProgress" type="Boolean" mayBeNull="false">Receives the Boolean value
 		/// specified in the tinyautosave_showsaveprogress configuration option, or true if none is specified.
 		/// This is a public read/write property, and the behavior of the toolbar button throbber/progress
@@ -50,6 +70,19 @@
 		/// 
 		/// tinyautosave_showsaveprogress - (Boolean, default = true) When true, the toolbar button will show a
 		/// brief animation every time an autosave occurs.
+		/// 
+		/// PUBLIC PROPERTIES:
+		/// 
+		/// Available public properties of the TinyAutoSave plugin are:
+		/// 	onPreSave (String)
+		/// 	onPostSave (String)
+		/// 	onSaveError (String)
+		/// 	onPreRestore (String)
+		/// 	onPostRestore (String)
+		/// 	onRestoreError (String)
+		/// 	showSaveProgress (Boolean)
+		/// 
+		/// See <field /> definitions above for detailed descriptions of the public properties.
 		/// 
 		/// TECHNOLOGY DISCUSSION:
 		/// 
@@ -100,8 +133,14 @@
 		// Public properties
 		editor: null,
 		url: "",
+		onPreSave: null,
+		onPostSave: null,
+		onSaveError: null,
+		onPreRestore: null,
+		onPostRestore: null,
+		onRestoreError: null,
 		showSaveProgress: true,
-	
+		
 		// Private properties
 		__save: null,
 		__saveFinal: null,
@@ -278,45 +317,71 @@
 			/// animates the toolbar button. Enables the 'tinyautosave' button to indicate
 			/// autosave content is available.
 			/// </summary>
+			/// <returns type="Boolean">Returns true if content was saved or false if not.</returns>
 
-			var ed = this.editor, now = new Date();
+			var t = this, ed = t.editor, is = tinymce.is, execCallback = ed.execCallback, saved = false, now = new Date();
 			
-			if ((ed) && (!this._busy)) {
-				this._busy = true;
+			if ((ed) && (!t._busy)) {
+				t._busy = true;
+		
+				if (is(t.onPreSave, "string")) {
+					if (!execCallback(t.onPreSave)) {
+						t._busy = false;
+						return false;
+					}
+				}
+
 				var content = ed.getContent();
 				
-				if ((typeof(content) === "string") && (content.length >= this._minLength)) {
-					var exp = new Date(now.getTime() + (this._retentionMinutes * 60 * 1000));
+				if (is(content, "string") && (content.length >= t._minLength)) {
+					var exp = new Date(now.getTime() + (t._retentionMinutes * 60 * 1000));
 					
-					if (this._useLocalStorage) {
-						localStorage.setItem("TinyAutoSave", exp.toString() + "," + this._encodeStorage(content)); // Uses local time for expiration
-					}
-					else if (this._useSessionStorage) {
-						sessionStorage.setItem("TinyAutoSave", exp.toString() + "," + this._encodeStorage(content)); // Uses local time for expiration
-					}
-					else if (this._useUserData) {
-						this._setUserData(ed, content, exp);
-					}
-					else {
-						var a = this._cookieName + "=";
-						var b = "; expires=" + exp.toUTCString();
+					try {
+						if (t._useLocalStorage) {
+							localStorage.setItem("TinyAutoSave", exp.toString() + "," + t._encodeStorage(content)); // Uses local time for expiration
+						}
+						else if (t._useSessionStorage) {
+							sessionStorage.setItem("TinyAutoSave", exp.toString() + "," + t._encodeStorage(content)); // Uses local time for expiration
+						}
+						else if (t._useUserData) {
+							t._setUserData(ed, content, exp);
+						}
+						else {
+							var a = t._cookieName + "=";
+							var b = "; expires=" + exp.toUTCString();
+							
+							document.cookie = a + t._encodeCookie(content).slice(0, 4096 - a.length - b.length) + b;
+						}
 						
-						document.cookie = a + this._encodeCookie(content).slice(0, 4096 - a.length - b.length) + b;
+						saved = true;
+					}
+					catch (e) {
+						if (is(t.onSaveError, "string")) {
+							execCallback(t.onSaveError);
+						}
 					}
 					
-					var cm = ed.controlManager;
-					this._canRestore = true;
-					cm.setDisabled('tinyautosave', false);
-					
-					if (this.showSaveProgress) {
-						var b = tinymce.DOM.get(cm.get('tinyautosave').id), restoreImage = this._restoreImage;
-						b.children[0].src = this._progressImage;
-						window.setTimeout(function () {b.children[0].src = restoreImage;}, 1200);
+					if (saved) {
+						var cm = ed.controlManager;
+						t._canRestore = true;
+						cm.setDisabled('tinyautosave', false);
+						
+						if (t.showSaveProgress) {
+							var b = tinymce.DOM.get(cm.get('tinyautosave').id), restoreImage = t._restoreImage;
+							b.children[0].src = t._progressImage;
+							window.setTimeout(function () {b.children[0].src = restoreImage;}, 1200);
+						}
+		
+						if (is(t.onPostSave, "string")) {
+							execCallback(t.onPostSave);
+						}
 					}
 				}
 				
-				this._busy = false;
+				t._busy = false;
 			}
+			
+			return saved;
 		},
 		
 		_cookieFilter: null,
@@ -334,54 +399,76 @@
 			/// is never built if cookies can be avoided.
 			/// </remarks>
 
-			var t = this, ed = t.editor, content = null;
+			var t = this, ed = t.editor, content = null, is = tinymce.is, execCallback = ed.execCallback;
 			
 			if ((ed) && (t._canRestore) && (!t._busy)) {
 				t._busy = true;
 				
-				if (t._useLocalStorage || t._useSessionStorage) {
-					content = ((t._useLocalStorage? localStorage.getItem("TinyAutoSave") : sessionStorage.getItem("TinyAutoSave")) || "").toString();
-					var i = content.indexOf(",");
-					
-					if (i == -1) {
-						content = null;
+				if (is(t.onPreRestore, "string")) {
+					if (!execCallback(t.onPreRestore)) {
+						t._busy = false;
+						return;
+					}
+				}
+
+				try {
+					if (t._useLocalStorage || t._useSessionStorage) {
+						content = ((t._useLocalStorage? localStorage.getItem("TinyAutoSave") : sessionStorage.getItem("TinyAutoSave")) || "").toString();
+						var i = content.indexOf(",");
+						
+						if (i == -1) {
+							content = null;
+						}
+						else {
+							content = t._decodeStorage(content.slice(i + 1, content.length));
+						}
+					}
+					else if (t._useUserData) {
+						content = t._getUserData(ed);
 					}
 					else {
-						content = t._decodeStorage(content.slice(i + 1, content.length));
-					}
-				}
-				else if (t._useUserData) {
-					content = t._getUserData(ed);
-				}
-				else {
-				
-					if (t._cookieFilter == null) {
-						t._cookieFilter = new RegExp("(?:^|;\\s*)" + t._cookieName + "=([^;]*)(?:;|$)", "i");
+					
+						if (t._cookieFilter == null) {
+							t._cookieFilter = new RegExp("(?:^|;\\s*)" + t._cookieName + "=([^;]*)(?:;|$)", "i");
+						}
+						
+						var m = t._cookieFilter.exec(document.cookie);
+						
+						if (m) {
+							content = t._decodeCookie(m[1]);
+						}
 					}
 					
-					var m = t._cookieFilter.exec(document.cookie);
-					
-					if (m) {
-						content = t._decodeCookie(m[1]);
-					}
-				}
-				
-				if (typeof(content) !== "string") {
-					ed.windowManager.alert("tinyautosave.no_content");
-				}
-				else {
-					
-					// If current contents are empty or whitespace, the confirmation is unnecessary
-					if (ed.getContent().replace(/\s|&nbsp;|<\/?p[^>]*>|<br[^>]*>/gi, "").length == 0) {
-						ed.setContent(content);
+					if (!is(content, "string")) {
+						ed.windowManager.alert("tinyautosave.no_content");
 					}
 					else {
-						ed.windowManager.confirm("tinyautosave.warning_message", function (ok) {
-							if (ok) {
-								ed.setContent(content);
+						
+						// If current contents are empty or whitespace, the confirmation is unnecessary
+						if (ed.getContent().replace(/\s|&nbsp;|<\/?p[^>]*>|<br[^>]*>/gi, "").length == 0) {
+							ed.setContent(content);
+				
+							if (is(t.onPostRestore, "string")) {
+								execCallback(t.onPostRestore);
 							}
-							t._busy = false;
-						}, this);
+						}
+						else {
+							ed.windowManager.confirm("tinyautosave.warning_message", function (ok) {
+								if (ok) {
+									ed.setContent(content);
+						
+									if (is(t.onPostRestore, "string")) {
+										execCallback(t.onPostRestore);
+									}
+								}
+								t._busy = false;
+							}, this);
+						}
+					}
+				}
+				catch (e) {
+					if (is(t.onRestoreError, "string")) {
+						execCallback(t.onRestoreError);
 					}
 				}
 				
