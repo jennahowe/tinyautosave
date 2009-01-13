@@ -18,16 +18,16 @@ Added error trapping during save and restore operations. Errors were being trigg
 	
 Added six events to allow extendability:
 
-  * onPreSave
-  * onPostSave
-  * onSaveError
-  * onPreRestore
-  * onPostRestore
-  * onRestoreError
+  * `onPreSave`
+  * `onPostSave`
+  * `onSaveError`
+  * `onPreRestore`
+  * `onPostRestore`
+  * `onRestoreError`
 		
-The six events are configured exactly like you would configure a TinyMCE event in your configuration file. They are six String properties, and you set them to the name of the function to call. See readme.txt or the <field> definitions in the source code for details.
+The six events are configured exactly like you would configure a TinyMCE event in your configuration file. They are six String properties, and you set them to the name of the function to call. See readme.txt or the `<field>` definitions in the source code for details.
 	
-One interesting use of the events would be in the case that the user tries to save, but the auto-save buffer is full. You can set an onSaveError to clear the current contents of the auto-save area using <plugin instance>.clear(), and then retry the auto-save by issuing a "mceTinyAutoSave" command on the editor instance. But you only need to do this kind of thing if users are editing content that regularly exceeds the TinyAutoSave buffer size.
+One interesting use of the events would be in the case that the user tries to save, but the auto-save buffer is full. You can set an onSaveError to clear the current contents of the auto-save area using `<plugin instance>.clear()`, and then retry the auto-save by issuing a `mceTinyAutoSave` command on the editor instance. But you only need to do this kind of thing if users are editing content that regularly exceeds the !TinyAutoSave buffer size.
 	
 Fixed project page URLs ([http://tinyautosave.googlecode.com]) and the Speednet Group home page link ([http://www.speednet.biz]).
 
