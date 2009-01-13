@@ -29,9 +29,26 @@ tinyMCE.init({
 *tinyautosave_retention_minutes* - _Number, default = *20*_
   The number of minutes since the last autosave that content will remain in the rescue storage space before it is automatically expired.  This option can also be specified as *tinyautosave_retention*.
 *tinyautosave_minlength* - _Number, default = *50*_
-  The minimum number of characters that must be in the editor before an autosave will occur.  The character count includes all non-visible characters, such as HTML tags.  Although this can be set to 0 (zero), it is not recommended.  Doing so would open the possibility that if the user accidentally refreshes the page, the empty editor contents would overwrite the rescue content, effectively defeating the purpose of the plugin.
+  The minimum number of characters that must be in the editor before an autosave will occur.  The character count includes all non-visible characters, such as HTML tags.  Although this can be set to `0` (zero), it is not recommended.  Doing so would open the possibility that if the user accidentally refreshes the page, the empty editor contents would overwrite the rescue content, effectively defeating the purpose of the plugin.
 *tinyautosave_showsaveprogress* - _Boolean, default = *true*_
   When true, the toolbar button will show a brief animation every time an autosave occurs.
+
+==Public properties==
+
+*onPreSave* - _String, default = *null*_
+  When set to the name of a function, that function will be called just before each auto-save occurs. The context of the function (the value of `this`) is set to the editor instance. The function must return a Boolean value indicating if the auto-save is to proceed normally (`true`) or be canceled (`false`).
+*onPostSave* - _String, default = *null*_
+  When set to the name of a function, that function will be called just after each auto-save occurs. The context of the function (the value of `this`) is set to the editor instance. Any return value from the function is ignored.
+*onSaveError* - _String, default = *null*_
+  When set to the name of a function, that function will be called every time an error occurs during an auto-save operation. The context of the function (the value of `this`) is set to the editor instance. Any return value from the function is ignored.
+*onPreRestore* - _String, default = *null*_
+  When set to the name of a function, that function will be called just before each restore request is carried out. The context of the function (the value of `this`) is set to the editor instance. The function must return a Boolean value indicating if the restore is to proceed normally (`true`) or be canceled (`false`).
+*onPostRestore* - _String, default = *null*_
+  When set to the name of a function, that function will be called just after each restore request is carried out. The context of the function (the value of `this`) is set to the editor instance. Any return value from the function is ignored.
+*onRestoreError* - _String, default = *null*_
+  When set to the name of a function, that function will be called every time an error occurs during a restore operation. The context of the function (the value of `this`) is set to the editor instance. Any return value from the function is ignored.
+*showSaveProgress* - _Boolean, default = *true*_
+  When `true`, the toolbar button will show a brief animation every time an autosave occurs. This property is initially set to the value of the `tinyautosave_showsaveprogress` configuration option, but this property allows the animation to be controlled dynamically.
 
 ==More information==
 
