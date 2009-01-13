@@ -11,6 +11,7 @@
   `plugins: "tinyautosave"`
 *3.* Add the button control name to a toolbar row in the theme.  For example:
   `theme_advanced_buttons1: "tinyautosave,|,cut,copy,paste"`
+
 ==Initialization Example==
 
 {{{
