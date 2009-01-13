@@ -1,7 +1,7 @@
 /*
 	TinyAutoSave plug-in, by Speednet
 	Adds auto-save capability to the TinyMCE text editor to rescue content inadvertently lost.
-	Copyright © 2008-2009, Speednet Group LLC, All rights reserved.
+	Copyright © 2008-2009 Speednet Group LLC. All rights reserved.
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -232,9 +232,9 @@
 			return {
 				longname: "TinyAutoSave",
 				author: "Speednet",
-				authorurl: "http://www.lotterypost.com/",
-				infourl: "http://code.google.com/p/tinyautosave/",
-				version: "1.0"
+				authorurl: "http://www.speednet.biz/",
+				infourl: "http://tinyautosave.googlecode.com/",
+				version: "1.1"
 			};
 		},
 
