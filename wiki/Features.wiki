@@ -10,7 +10,7 @@
   * [Functionality Completely automated operation]: runs silently in the background, users don't need to do a thing.
   * [Technology Large document support]: more than 90% of all Web browsers in use today can auto-save documents 128K in size or greater - even with cookes disabled.
   * Granular [GettingStarted configuration options] for changing how it works.
-  * 6 different events to control behavior and content before/after auto-saves and restores, and to respond to errors.
+  * Six different events to control behavior and content before/after auto-saves and restores, and to respond to errors.
   * Extensively documented source code, including support for Visual Studio Intellisense.
   * Automatically switches to `.gif` version of toolbar button for browsers with no `.png` support.
   * Comes with 12 different animations to choose from.
