@@ -1,9 +1,11 @@
 TinyAutoSave plug-in for TinyMCE
-by Speednet
+by Speednet Group
+Copyright © 2008-2009 Speednet Group LLC. All rights reserved.
+Last updated Jan. 13, 2009
 
 Automatically saves the editor contents periodically and just before
 leaving the current page.  Allows the user to rescue the contents of
-the last autosave, in case they did not intend to navigate away from
+the last auto-save, in case they did not intend to navigate away from
 the current page or the browser window was closed before posting the
 content.
 
@@ -13,7 +15,7 @@ See license.txt in the project root for details.
 See changelog.txt for a summary of changes to the project.
 
 TinyAutoSave project page:
-http://code.google.com/p/tinyautosave/
+http://tinyautosave.googlecode.com
 
 See description of commands and options below.
 
@@ -22,9 +24,7 @@ About the Author
 	largest community of lottery players and home to the world's #1
 	lottery results service. (www.lotterypost.com)
 
------------------------------------------
-COMMANDS AND OPTIONS
-
+____________________________
 TinyMCE Commands
 
 	mceTinyAutoSaveRestore - Called when toolbar button is clicked.
@@ -35,7 +35,7 @@ TinyMCE Commands
 		executed in two ways: (1) with a timer that saves the contents
 		periodically, and (2) when the current page is exited/closed.
 
-		
+____________________________
 Configuration Options
 
 	tinyautosave_interval_seconds - (Number, default = 60) The number of
@@ -58,5 +58,50 @@ Configuration Options
 		toolbar button will show a brief animation every time an autosave
 		occurs.
 
+____________________________
+Public Properties
 
-
+	onPreSave - (String, default = null) When set to the name of a function,
+		that function will be called just before each auto-save occurs. The
+		context of the function (the value of 'this') is set to the editor
+		instance. The function must return a Boolean value indicating if the
+		auto-save is to proceed normally (true) or be canceled (false).
+	
+	onPostSave - (String, default = null) When set to the name of a function,
+		that function will be called just after each auto-save occurs. The
+		context of the function (the value of 'this') is set to the editor
+		instance. Any return value from the function is ignored.
+	
+	onSaveError - (String, default = null) When set to the name of a
+		function, that function will be called every time an error occurs
+		during an auto-save operation. The context of the function (the value
+		of 'this') is set to the editor instance. Any return value from the
+		function is ignored.
+	
+	onPreRestore - (String, default = null) When set to the name of a
+		function, that function will be called just before each restore
+		request is carried out. The context of the function (the value of
+		'this') is set to the editor instance. The function must return a
+		Boolean value indicating if the restore is to proceed normally (true)
+		or be canceled (false).
+	
+	onPostRestore - (String, default = null) When set to the name of a
+		function, that function will be called just after each restore
+		request is carried out. The context of the function (the value of
+		'this') is set to the editor instance. Any return value from the
+		function is ignored.
+	
+	onRestoreError - (String, default = null) When set to the name of a
+		function, that function will be called every time an error occurs
+		during a restore operation. The context of the function (the value
+		of 'this') is set to the editor instance. Any return value from the
+		function is ignored.
+	
+	showSaveProgress - (Boolean, default = true) When true, the toolbar
+		button will show a brief animation every time an autosave occurs.
+		This property is initially set to the value of the 
+		tinyautosave_showsaveprogress configuration option, but this
+		property allows the animation to be controlled dynamically.
+	
+	
+__
