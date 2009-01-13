@@ -7,10 +7,10 @@ This release adds important stability features to the !TinyAutoSave plugin.
 
 Changed files:
 
-  # changelog.txt
-  # readme.txt
-  # tinyautosave/editor_plugin.js
-  # tinyautosave/editor_plugin_src.js
+  * changelog.txt
+  * readme.txt
+  * tinyautosave/editor_plugin.js
+  * tinyautosave/editor_plugin_src.js
 
 ==What's new==
 
@@ -18,12 +18,12 @@ Added error trapping during save and restore operations. Errors were being trigg
 	
 Added six events to allow extendability:
 
-  # onPreSave
-  # onPostSave
-  # onSaveError
-  # onPreRestore
-  # onPostRestore
-  # onRestoreError
+  * onPreSave
+  * onPostSave
+  * onSaveError
+  * onPreRestore
+  * onPostRestore
+  * onRestoreError
 		
 The six events are configured exactly like you would configure a TinyMCE event in your configuration file. They are six String properties, and you set them to the name of the function to call. See readme.txt or the <field> definitions in the source code for details.
 	
