@@ -1,0 +1,33 @@
+#summary Version 1.2 release notes.
+#labels Featured,Notes
+
+=Version 1.2 release notes=
+
+This release improves stability and customization abilities of the !TinyAutoSave plugin.
+
+Changed files:
+
+  * changelog.txt
+  * readme.txt
+  * tinyautosave/editor_plugin.js
+  * tinyautosave/editor_plugin_src.js
+
+==What's new==
+
+Fixed Firefox bug that prevented the progress indicator/throbber from displaying.
+
+Added new public property `progressDisplayTime`, for changing the number of milliseconds the progress indicator/throbber will display after each auto-save. The default value is `1200` (equivalent of 1.2 seconds).
+
+Added new configuration option `tinyautosave_oninit`, which accepts a String value of the name of a function that will be called immediately after the !TinyAutoSave plugin is initialized. Can use dot-notation (i.e., `myObject.myFunction`). This function is a good place to set public properties and anything else that alters the look and/or behavior of the !TinyAutoSave plugin. The context of the function call (the value of `this`) is the !TinyAutoSave plugin instance.
+
+Added new public method `setProgressImage()`, for changing the progress indicator/throbber image. Accepts one argument: the URL of the image.
+
+Added new image preload feature, which preloads the progress indicator/throbber image during initialization, as well as any time the image is changed, so that it is displayed without delay the first time it is needed.
+
+Added additional error trapping to account for "The data is invalid" error in IE. The error occurs when the UserData storage becomes corrupted, which happens every so often for some unknown reason.
+
+Updated, expanded, and improved in-code documentation and formatting.
+
+==Download==
+
+You can grab version 1.2 on the [http://code.google.com/p/tinyautosave/downloads/list/ Downloads] page.
