@@ -15,4 +15,4 @@ There are currently four different technologies used in this first release of th
 
 ==Download==
 
-You can grab version 1.0 on the [http://code.google.com/p/tinyautosave/downloads/list/ Downloads] page.
+You can grab version 1.0 on the [http://code.google.com/p/tinyautosave/downloads/list Downloads] page.
