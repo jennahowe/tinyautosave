@@ -57,15 +57,15 @@ tinyMCE.init({
 
 ==Public methods==
 
-*init()* - _*Arguments:* Editor instance (Object), URL of plugin folder (String); *Return value:* none_
+*init()* - Arguments: _Editor instance (Object), URL of plugin folder (String);_ Return value: _none_
   Called by TinyMCE to initialize the plugin.
-*getInfo()* - _*Arguments:* none; *Return value:* Information about the plugin (Object)_
+*getInfo()* - Arguments: _none;_ Return value: _Information about the plugin (Object)_
   Called by TinyMCE to retrieve information about the plugin.
-*clear()* - _*Arguments:* none; *Return value:* none_
+*clear()* - Arguments: _none;_ Return value: _none_
   Clears any auto-saved content currently stored, and "dims" the Restore toolbar button.
-*hasSavedContent()* - _*Arguments:* none; *Return value:* `true` if rescue content is available (Boolean)_
+*hasSavedContent()* - Arguments: _none;_ Return value: _`true` if rescue content is available (Boolean)_
   Returns true if there is auto-save content available to be restored, or false if not.
-*setProgressImage()* - _*Arguments:* Image URL (String); *Return value:* none_
+*setProgressImage()* - Arguments: _Image URL (String);_ Return value: _none_
   Sets the URL of the image that will be displayed every time an auto-save occurs.
 
 ==More information==
