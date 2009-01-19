@@ -31,6 +31,8 @@ tinyMCE.init({
   The number of minutes since the last autosave that content will remain in the rescue storage space before it is automatically expired.  This option can also be specified as *tinyautosave_retention*.
 *tinyautosave_minlength* - _Number, default = *50*_
   The minimum number of characters that must be in the editor before an autosave will occur.  The character count includes all non-visible characters, such as HTML tags.  Although this can be set to `0` (zero), it is not recommended.  Doing so would open the possibility that if the user accidentally refreshes the page, the empty editor contents would overwrite the rescue content, effectively defeating the purpose of the plugin.
+*tinyautosave_oninit* - _String, default = *null*_
+  The name of a function to call immediately after the plugin instance is initialized.  Can include dot-notation, e.g., `myObject.myFunction`.  The context of the function call (the value of `this`) is the plugin instance.  This function is a good place to set any of the public properties that you want to configure.
 *tinyautosave_showsaveprogress* - _Boolean, default = *true*_
   When true, the toolbar button will show a brief animation every time an autosave occurs.
 
@@ -48,8 +50,23 @@ tinyMCE.init({
   When set to the name of a function, that function will be called just after each restore request is carried out. The context of the function (the value of `this`) is set to the editor instance. Any return value from the function is ignored.
 *onRestoreError* - _String, default = *null*_
   When set to the name of a function, that function will be called every time an error occurs during a restore operation. The context of the function (the value of `this`) is set to the editor instance. Any return value from the function is ignored.
+*progressDisplayTime* - _Number, default = *1200*_
+  Number of milliseconds that the progress image is displayed after an auto-save.  The default of 1200 is the equivalent of 1.2 seconds.
 *showSaveProgress* - _Boolean, default = *true*_
   When `true`, the toolbar button will show a brief animation every time an autosave occurs. This property is initially set to the value of the `tinyautosave_showsaveprogress` configuration option, but this property allows the animation to be controlled dynamically.
+
+==Public methods==
+
+*init()* - _*Arguments:* Editor instance (Object), URL of plugin folder (String); *Return value:* none_
+  Called by TinyMCE to initialize the plugin.
+*getInfo()* - _*Arguments:* none; *Return value:* Information about the plugin (Object)_
+  Called by TinyMCE to retrieve information about the plugin.
+*clear()* - _*Arguments:* none; *Return value:* none_
+  Clears any auto-saved content currently stored, and "dims" the Restore toolbar button.
+*hasSavedContent()* - _*Arguments:* none; *Return value:* `true` if rescue content is available (Boolean)_
+  Returns true if there is auto-save content available to be restored, or false if not.
+*setProgressImage()* - _*Arguments:* Image URL (String); *Return value:* none_
+  Sets the URL of the image that will be displayed every time an auto-save occurs.
 
 ==More information==
 
