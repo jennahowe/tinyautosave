@@ -30,4 +30,4 @@ Updated, expanded, and improved in-code documentation and formatting.
 
 ==Download==
 
-You can grab version 1.2 on the [http://code.google.com/p/tinyautosave/downloads/list/ Downloads] page.
+You can grab version 1.2 on the [http://code.google.com/p/tinyautosave/downloads/list Downloads] page.
