@@ -1,7 +1,7 @@
 TinyAutoSave plug-in for TinyMCE
 by Speednet Group
 Copyright © 2008-2009 Speednet Group LLC. All rights reserved.
-Last updated Jan. 13, 2009
+Last updated Jan. 18, 2009
 
 Automatically saves the editor contents periodically and just before
 leaving the current page.  Allows the user to rescue the contents of
@@ -17,7 +17,7 @@ See changelog.txt for a summary of changes to the project.
 TinyAutoSave project page:
 http://tinyautosave.googlecode.com
 
-See description of commands and options below.
+See description of commands, options, properties, and methods below.
 
 About the Author
 	Speednet is the owner and developer of Lottery Post, the world's
@@ -54,6 +54,14 @@ Configuration Options
 		refreshes the page, the empty editor contents would overwrite the
 		rescue content, effectively defeating the purpose of the plugin.
 
+	tinyautosave_oninit - (String, default = null) Name of a function that
+		will be called immediately after the TinyAutoSave plugin is
+		initialized. Can use dot-notation (i.e., "myObject.myFunction").
+		This function is a good place to set public properties and anything
+		else that alters the look and/or behavior of the TinyAutoSave plugin.
+		The context of the function call (the value of 'this') is the
+		TinyAutoSave plugin instance.
+		
 	tinyautosave_showsaveprogress - (Boolean, default = true) When true, the
 		toolbar button will show a brief animation every time an autosave
 		occurs.
@@ -97,11 +105,31 @@ Public Properties
 		of 'this') is set to the editor instance. Any return value from the
 		function is ignored.
 	
+	progressDisplayTime - (Number, default = 1200) Number of milliseconds
+		the progress indicator/throbber will display after each auto-save.
+		The default value of 1200 is the equivalent of 1.2 seconds.
+	
 	showSaveProgress - (Boolean, default = true) When true, the toolbar
 		button will show a brief animation every time an autosave occurs.
 		This property is initially set to the value of the 
 		tinyautosave_showsaveprogress configuration option, but this
 		property allows the animation to be controlled dynamically.
+
+____________________________
+Public Methods
+
+	init() - Called by TinyMCE to initialize the plugin
+	
+	getInfo() - Called by TinyMCE to retrieve information about the plugin.
+	
+	clear() - Clears any auto-saved content currently stored, and "dims"
+		the Restore toolbar button.
+	
+	hasSavedContent() - Returns true if there is auto-save content available
+		to be restored, or false if not.
+	
+	setProgressImage() - Sets the URL of the image that will be displayed
+		every time an auto-save occurs.
 	
 	
 __

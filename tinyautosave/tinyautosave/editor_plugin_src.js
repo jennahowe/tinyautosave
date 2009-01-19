@@ -3,6 +3,9 @@
 	Adds auto-save capability to the TinyMCE text editor to rescue content inadvertently lost.
 	Copyright © 2008-2009 Speednet Group LLC. All rights reserved.
 
+	Version 1.2
+	January 18, 2008
+	
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
@@ -28,6 +31,10 @@
 		/// Allows the user to rescue the contents of the last autosave, in case they did not intend to
 		/// navigate away from the current page or the browser window was closed before posting the content.
 		/// </summary>
+		/// <field name="editor" type="Object" mayBeNull="false">A reference to the TinyMCE editor instance that
+		/// contains this TinyAutoSave plugin instance.</field>
+		/// <field name="url" type="String" mayBeNull="false">The URL of the folder containing the TinyAutoSave
+		/// plugin. Does not include a trailing slash.</field>
 		/// <field name="onPreSave" type="String" mayBeNull="false">Name of a callback function that gets called
 		/// before each auto-save is performed. The callback function must return a Boolean value of true if the
 		/// auto-save is to proceed normally, or false if the auto-save is to be canceled. The editor instance
@@ -48,6 +55,9 @@
 		/// <field name="onRestoreError" type="String" mayBeNull="false">Name of a callback function that gets called
 		/// each time a restore request fails in an error condition. The editor instance is the context of the
 		/// callback (assigned to 'this').</field>
+		/// <field name="progressDisplayTime" type="Number" integer="true" mayBeNull="false">Number of milliseconds
+		/// that the progress image is displayed after an auto-save. The default is 1200, which is the equivalent
+		/// of 1.2 seconds.</field>
 		/// <field name="showSaveProgress" type="Boolean" mayBeNull="false">Receives the Boolean value
 		/// specified in the tinyautosave_showsaveprogress configuration option, or true if none is specified.
 		/// This is a public read/write property, and the behavior of the toolbar button throbber/progress
@@ -59,30 +69,53 @@
 		/// tinyautosave_interval_seconds - (Number, default = 60) The number of seconds between automatic saves.
 		/// When the editor is first displayed, an autosave will not occur for at least this amount of time.
 		/// 
-		/// tinyautosave_retention_minutes - (Number, default = 20) The number of minutes since the last autosave
-		/// that content will remain in the rescue storage space before it is automatically expired.
-		/// 
 		/// tinyautosave_minlength - (Number, default = 50) The minimum number of characters that must be in the
 		/// editor before an autosave will occur.  The character count includes all non-visible characters,
 		/// such as HTML tags.  Although this can be set to 0 (zero), it is not recommended.  Doing so would
 		/// open the possibility that if the user accidentally refreshes the page, the empty editor contents
 		/// would overwrite the rescue content, effectively defeating the purpose of the plugin.
 		/// 
+		/// tinyautosave_retention_minutes - (Number, default = 20) The number of minutes since the last autosave
+		/// that content will remain in the rescue storage space before it is automatically expired.
+		/// 
+		/// tinyautosave_oninit - (String, default = null) The name of a function to call immediately after the
+		/// TinyAutoSave plugin instance is initialized. Can include dot-notation, e.g., "myObject.myFunction".
+		/// The context of the function call (the value of 'this') is the plugin instance. This function is
+		/// a good place to set any of the public properties that you want to configure.
+		/// 
 		/// tinyautosave_showsaveprogress - (Boolean, default = true) When true, the toolbar button will show a
 		/// brief animation every time an autosave occurs.
+		/// 
+		/// COMMANDS:
+		/// 
+		/// Available TinyMCE commands are:
+		/// 	mceTinyAutoSave - Perform an auto-save
+		/// 	mceTinyAutoSaveRestore - Restore auto-saved content into the editor
 		/// 
 		/// PUBLIC PROPERTIES:
 		/// 
 		/// Available public properties of the TinyAutoSave plugin are:
+		/// 	editor (Object)
+		/// 	url (String)
 		/// 	onPreSave (String)
 		/// 	onPostSave (String)
 		/// 	onSaveError (String)
 		/// 	onPreRestore (String)
 		/// 	onPostRestore (String)
 		/// 	onRestoreError (String)
+		/// 	progressDisplayTime (Number)
 		/// 	showSaveProgress (Boolean)
 		/// 
-		/// See <field /> definitions above for detailed descriptions of the public properties.
+		/// See [field] definitions above for detailed descriptions of the public properties.
+		/// 
+		/// PUBLIC METHODS:
+		/// 
+		/// Available public methods of the TinyAutoSave plugin are:
+		/// 	init() - [Called by TinyMCE]
+		/// 	getInfo() - [Called by TinyMCE]
+		/// 	clear() - Clears any auto-saved content currently stored, and "dims" the Restore toolbar button.
+		/// 	hasSavedContent() - Returns true if there is auto-save content available to be restored, or false if not.
+		/// 	setProgressImage() - Sets the URL of the image that will be displayed every time an auto-save occurs.
 		/// 
 		/// TECHNOLOGY DISCUSSION:
 		/// 
@@ -96,7 +129,7 @@
 		/// to be working in Firefox 3 and Safari 3.2, but in reality is is flaky in those browsers.  As
 		/// HTML 5 gets wider support, the TinyAutoSave plugin will use it automatically. In Windows Vista,
 		/// localStorage is stored in the following folder:
-		/// C:\Users\<username>\AppData\Local\Microsoft\Internet Explorer\DOMStore\<tempFolder>
+		/// C:\Users\[username]\AppData\Local\Microsoft\Internet Explorer\DOMStore\[tempFolder]
 		/// 
 		/// 2. sessionStorage - A new feature of HTML 5, sessionStorage works similarly to localStorage,
 		/// except it is designed to expire after a certain amount of time.  Because the specification
@@ -130,7 +163,9 @@
 		/// of autosaved content by at least half.
 		/// </remarks>
 	
+		//************************************************************************
 		// Public properties
+		
 		editor: null,
 		url: "",
 		onPreSave: null,
@@ -140,15 +175,18 @@
 		onPostRestore: null,
 		onRestoreError: null,
 		showSaveProgress: true,
+		progressDisplayTime: 1200,  // Milliseconds
 		
+		//************************************************************************
 		// Private properties
+		
 		__save: null,
 		__saveFinal: null,
 		__restore: null,
 		__dispose: null,
 		_cookieName: "tinyautosave",
+		_progressImage: "progress.gif",
 		_restoreImage: "",
-		_progressImage: "",
 		_intervalSeconds: 60,
 		_retentionMinutes: 20,
 		_minLength: 50,
@@ -159,24 +197,31 @@
 		_useUserData: false,
 		_timer: null,
 		
-		// Initialization - called by TinyMCE
+		//************************************************************************
+		// Public methods
+		
 		init: function (ed, url) {
+			/// <summary>
+			/// Initialization function called by TinyMCE.
+			/// </summary>
 		
 			function createDelegate(instance, method) {
 				/// <summary>
 				/// Returns a delegate function, used for callbacks. Ensures 'this' refers
 				/// to the desired object.
 				/// </summary>
-				/// <param name="instance" type="Object" optional="false" mayBeNull="true">Object that will be 'this' within the callback function.</param>
-				/// <param name="method" type="Function" optional="false" mayBeNull="false">Callback function</param>
+				/// <param name="instance" type="Object" optional="false" mayBeNull="true">
+				/// Object that will be 'this' within the callback function.</param>
+				/// <param name="method" type="Function" optional="false" mayBeNull="false">
+				/// Callback function</param>
 				/// <returns type="Function"></returns>
 				
 				return function () {
-					return method.apply(instance, arguments);
+					return method.apply(instance);
 				};
 			}
 
-			var t = this;
+			var t = this, is = tinymce.is, resolve = tinymce.resolve;
 
 			if (!(t._useLocalStorage = ((typeof(localStorage) === "object") && (!!localStorage.getItem) && (!!localStorage.setItem) && (!!localStorage.removeItem)))) {
 				if (!(t._useSessionStorage = ((typeof(sessionStorage) === "object") && (!!sessionStorage.getItem) && (!!sessionStorage.setItem) && (!!sessionStorage.removeItem)))) {
@@ -188,15 +233,35 @@
 			
 			t.editor = ed;
 			t.url = url;
-			t._cookieName = "tinyautosave_" + ed.id;
 			t._restoreImage = url + "/images/restore." + (tinymce.isIE6? "gif" : "png");
-			t._progressImage = url + "/images/progress.gif";
-			t._intervalSeconds = Math.max(1, parseInt(ed.getParam("tinyautosave_interval_seconds", null) || ed.getParam("tinyautosave_interval", t._intervalSeconds))); // Default = 60 seconds; minimum is 1
-			t._retentionMinutes = Math.max(1, parseInt(ed.getParam("tinyautosave_retention_minutes", null) || ed.getParam("tinyautosave_retention", t._retentionMinutes))); // Default = 20 minutes; minimum is 1
-			t._minLength = Math.max(1, parseInt(ed.getParam("tinyautosave_minlength", t._minLength))); // Default = 50 characters; minimum is 1
+			t._cookieName = "tinyautosave_" + ed.id;
+			t.setProgressImage(url + "/images/" + t._progressImage);
+			
+			// Get the auto-save interval from the TinyMCE config.  (i.e., auto-save every 'x' seconds.)
+			// Integer value.  If not specified in config, default is 60 seconds; minimum is 1 second.
+			// Either 'tinyautosave_interval_seconds' or 'tinyautosave_interval' can be used, but 'tinyautosave_interval_seconds' provides better clarity.
+			t._intervalSeconds = Math.max(1, parseInt(ed.getParam("tinyautosave_interval_seconds", null) || ed.getParam("tinyautosave_interval", t._intervalSeconds)));
+			
+			// Get the rescue content retention time from the TinyMCE config.  (i.e., rescue content available for 'x' minutes after navigating from page.)
+			// Integer value.  If not specified in config, default is 20 minutes; minimum is 1 minute.
+			// Don't make this too long; users will get weirded out if content from long ago is still hanging around.
+			// Either 'tinyautosave_retention_minutes' or 'tinyautosave_retention' can be used, but 'tinyautosave_retention_minutes' provides better clarity.
+			t._retentionMinutes = Math.max(1, parseInt(ed.getParam("tinyautosave_retention_minutes", null) || ed.getParam("tinyautosave_retention", t._retentionMinutes)));
+			
+			// Get the minimum content length from the TinyMCE config.  (i.e., minimum number of characters in the editor before an auto-save can occur.)
+			// Integer value.  If not specified in config, default is 50 characters; minimum is 1 character.
+			// Prevents situation where user accidentally hits Refresh, then their rescue content is wiped out when the editor auto-saves the blank editor on the refreshed page.  No need to auto-save a few characters.
+			// Specified as 'tinyautosave_minlength' in the config.
+			t._minLength = Math.max(1, parseInt(ed.getParam("tinyautosave_minlength", t._minLength)));
+			
+			// Determine if progress animation should occur by reading TinyMCE config.
+			// Boolean value.  If not specified in config, default is true, progress animation will be displayed after each auto-save.
+			// Specified as 'tinyautosave_showsaveprogress' in the config.
 			t.showSaveProgress = ed.getParam("tinyautosave_showsaveprogress", t.showSaveProgress);
+			
 			t._canRestore = t.hasSavedContent();
 			
+			// Save action delegates with context
 			t.__save = createDelegate(t, t._save);
 			t.__saveFinal = createDelegate(t, t._saveFinal);
 			t.__restore = createDelegate(t, t._restore);
@@ -226,15 +291,33 @@
 			ed.onPostRender.add(function (ed, cm) {
 				ed.controlManager.setDisabled('tinyautosave', !t._canRestore);
 			});
+			
+			// Call tinyautosave_oninit, if specified
+			// This config option is a String value specifying the name of a function to call. Can include dot-notation, e.g., "myObject.myFunction".
+			// The context of the function call (the value of 'this') is the plugin instance.
+			var onInit = ed.getParam("tinyautosave_oninit", null);
+			
+			if (is(onInit, "string")) {
+				var f = resolve(onInit);
+				
+				if (is(f, "function")) {
+					f.apply(t);
+				}
+			}
 		},
 		
 		getInfo: function() {
+			/// <summary>
+			/// Called by TinyMCE, returns standard information about the plugin
+			/// to display in the About box.
+			/// </summary>
+
 			return {
 				longname: "TinyAutoSave",
 				author: "Speednet",
 				authorurl: "http://www.speednet.biz/",
 				infourl: "http://tinyautosave.googlecode.com/",
-				version: "1.1"
+				version: "1.2"
 			};
 		},
 
@@ -243,22 +326,22 @@
 			/// Removes the autosave content from storage. Disables the 'tinyautosave' toolbar button.
 			/// </summary>
 
-			var ed = this.editor, now = new Date();
+			var t = this, ed = t.editor, now = new Date();
 			
-			if (this._useLocalStorage) {
+			if (t._useLocalStorage) {
 				localStorage.removeItem("TinyAutoSave");
 			}
-			else if (this._useSessionStorage) {
+			else if (t._useSessionStorage) {
 				sessionStorage.removeItem("TinyAutoSave");
 			}
-			else if (this._useUserData) {
-				this._removeUserData(ed);
+			else if (t._useUserData) {
+				t._removeUserData(ed);
 			}
 			else {
-				tinymce.util.Cookie.remove(this._cookieName);
+				tinymce.util.Cookie.remove(t._cookieName);
 			}
 
-			this._canRestore = false;
+			t._canRestore = false;
 			ed.controlManager.setDisabled('tinyautosave', true);
 		},
 		
@@ -268,35 +351,62 @@
 			/// </summary>
 			/// <returns type="Boolean"></returns>
 
-			if (this._useLocalStorage || this._useSessionStorage) {
-				var now = new Date();
-				var content = ((this._useLocalStorage? localStorage.getItem("TinyAutoSave") : sessionStorage.getItem("TinyAutoSave")) || "").toString();
-				var i = content.indexOf(",");
-				
-				if ((i > 8) && (i < content.length - 1)) {
+			try {
+				if (this._useLocalStorage || this._useSessionStorage) {
+					var now = new Date();
+					var content = ((this._useLocalStorage? localStorage.getItem("TinyAutoSave") : sessionStorage.getItem("TinyAutoSave")) || "").toString();
+					var i = content.indexOf(",");
 					
-					if ((new Date(content.slice(0, i))) > now) {
-						return true;
+					if ((i > 8) && (i < content.length - 1)) {
+						
+						if ((new Date(content.slice(0, i))) > now) {
+							return true;
+						}
+						
+						// Remove expired content
+						if (this._useLocalStorage) {
+							localStorage.removeItem("TinyAutoSave");
+						}
+						else {
+							sessionStorage.removeItem("TinyAutoSave");
+						}
 					}
 					
-					// Remove expired content
-					if (this._useLocalStorage) {
-						localStorage.removeItem("TinyAutoSave");
-					}
-					else {
-						sessionStorage.removeItem("TinyAutoSave");
-					}
+					return false;
+				}
+				else if (this._useUserData) {
+					return ((this._getUserData(this.editor) || "").length > 0);
 				}
 				
+				return ((tinymce.util.Cookie.get(this._cookieName) || "").length > 0);
+			}
+			catch (e) {
 				return false;
 			}
-			else if (this._useUserData) {
-				return ((this._getUserData(this.editor) || "").length > 0);
-			}
-			
-			return ((tinymce.util.Cookie.get(this._cookieName) || "").length > 0);
 		},
 		
+		setProgressImage: function (url) {
+			/// <summary>
+			/// Sets the progress image/throbber to a specified URL. The progress image
+			/// temporarily replaces the image on the TinyAutoSave toolbar button every
+			/// time an auto-save occurs. The default value is
+			/// "[tinymce]/plugins/tinyautosave/images/progress.gif". Can be set any time
+			/// after the plugin initializes. The progress image is normally an animated GIF,
+			/// but it can be any image type. Because the image will be displayed on a toolbar
+			/// button, so the recommended size is 16 x 16.
+			/// </summary>
+			/// <param name="url" type="String" optional="false" mayBeNull="false">The URL
+			/// of the image that will be displayed on the restore toolbar button every time
+			/// an auto-save occurs.</param>
+			
+			var t = this, is = tinymce.is;
+			
+			if (is(url, "string")) {
+				t._progressImage = url;
+				t._preloadImage(url);
+			}
+		},
+
 		//************************************************************************
 		// Private methods and properties
 		
@@ -368,8 +478,8 @@
 						
 						if (t.showSaveProgress) {
 							var b = tinymce.DOM.get(cm.get('tinyautosave').id), restoreImage = t._restoreImage;
-							b.children[0].src = t._progressImage;
-							window.setTimeout(function () {b.children[0].src = restoreImage;}, 1200);
+							b.firstChild.src = t._progressImage;
+							window.setTimeout(function () {b.firstChild.src = restoreImage;}, Math.min(t.progressDisplayTime, t._intervalSeconds * 1000 - 100));
 						}
 		
 						if (is(t.onPostSave, "string")) {
@@ -500,7 +610,8 @@
 			/// <summary>
 			/// IE browsers only. Retrieves a string from the 'UserData' storage area.
 			/// </summary>
-			/// <param name="ed" type="Object" optional="false" mayBeNull="false">TinyMCE Editor instance that is the target of the autosave</param>
+			/// <param name="ed" type="Object" optional="false" mayBeNull="false">
+			/// TinyMCE Editor instance that is the target of the autosave</param>
 			/// <returns type="String"></returns>
 
 			var ta = ed.getElement();
@@ -513,7 +624,8 @@
 			/// <summary>
 			/// IE browsers only. Removes a string from the 'UserData' storage area.
 			/// </summary>
-			/// <param name="ed" type="Object" optional="false" mayBeNull="false">TinyMCE Editor instance that is the target of the autosave</param>
+			/// <param name="ed" type="Object" optional="false" mayBeNull="false">
+			/// TinyMCE Editor instance that is the target of the autosave</param>
 			
 			ed.getElement().removeAttribute("tinyautosave", str);
 		},
@@ -523,10 +635,11 @@
 		
 		_encodeCookie: function (str) {
 			/// <summary>
-			/// Encodes a string value intended for storage in a cookie. Used instead of escape()
-			/// to be more space-efficient and to apply some minor compression.
+			/// Encodes a string value intended for storage in a cookie. Used instead of
+			/// escape() to be more space-efficient and to apply some minor compression.
 			/// </summary>
-			/// <param name="str" type="String" optional="false" mayBeNull="false">String to encode for cookie storage</param>
+			/// <param name="str" type="String" optional="false" mayBeNull="false">
+			/// String to encode for cookie storage</param>
 			/// <returns type="String"></returns>
 			/// <remarks>
 			/// Depends on the existence of the _encodeKey property. Used as a lookup table.
@@ -549,7 +662,8 @@
 			/// <summary>
 			/// Decodes a string value that was previously encoded with _encodeCookie().
 			/// </summary>
-			/// <param name="str" type="String" optional="false" mayBeNull="false">String that was previously encoded with _encodeCookie()</param>
+			/// <param name="str" type="String" optional="false" mayBeNull="false">
+			/// String that was previously encoded with _encodeCookie()</param>
 			/// <returns type="String"></returns>
 			/// <remarks>
 			/// Depends on the existence of the _decodeKey property. Used as a lookup table.
@@ -577,7 +691,8 @@
 			/// <summary>
 			/// Encodes a string value intended for storage in either localStorage or sessionStorage.
 			/// </summary>
-			/// <param name="str" type="String" optional="false" mayBeNull="false">String to encode for localStorage or sessionStorage</param>
+			/// <param name="str" type="String" optional="false" mayBeNull="false">
+			/// String to encode for localStorage or sessionStorage</param>
 			/// <returns type="String"></returns>
 			/// <remarks>
 			/// Necessary because a bug in Safari truncates the string at the first comma.
@@ -590,23 +705,39 @@
 			/// <summary>
 			/// Decodes a string value that was previously encoded with _encodeStorage().
 			/// </summary>
-			/// <param name="str" type="String" optional="false" mayBeNull="false">String that was previously encoded with _encodeStorage()</param>
+			/// <param name="str" type="String" optional="false" mayBeNull="false">
+			/// String that was previously encoded with _encodeStorage()</param>
 			/// <returns type="String"></returns>
 
 			return str.replace(/&#44;/g, ",");
+		},
+		
+		_images: [],
+		
+		_preloadImage: function (imageURL) {
+			/// <summary>
+			/// Preloads an image so it will be instantly displayed the first time it's needed.
+			/// </summary>
+			
+			var images = this._images, i = images.length;
+			
+			images[i] = new Image();
+			images[i].src = imageURL;
 		},
 		
 		_dispose: function () {
 			/// <summary>
 			/// Called just before the current page unloads. Cleans up memory, releases timers and events.
 			/// </summary>
-		
-			if (this._timer) {
-				window.clearInterval(this._timer);
+			
+			var t = this;
+			
+			if (t._timer) {
+				window.clearInterval(t._timer);
 			}
 			
-			tinymce.dom.Event.remove(window, "beforeunload", this.__saveFinal);
-			this.__save = this.__saveFinal = this.__restore = this.__dispose = this._timer = this._cookieFilter = this._encodeKey = this._decodeKey = null;
+			tinymce.dom.Event.remove(window, "beforeunload", t.__saveFinal);
+			t.__save = t.__saveFinal = t.__restore = t.__dispose = t._timer = t._cookieFilter = t._encodeKey = t._decodeKey = t._images = null;
 		}
 	});
 
