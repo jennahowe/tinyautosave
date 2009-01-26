@@ -14,7 +14,7 @@ With !TinyAutoSave installed, the user has simply to click the Restore button, a
 
 The plugin works with every type of Web browser.  In addition, it takes advantage of new features available in modern Web browsers to expand the auto-save storage area, allowing very large documents to be rescued.
 
-TinyAutoSave, is released under the GPL version 3 open-source license, allowing free use and modification of the code (see license.txt included in source package).
+!TinyAutoSave, is released under the GPL version 3 open-source license, allowing free use and modification of the code (see license.txt included in source package).
 
 Because browser technology continues to improve, and is actually accelerating due to increased competition among the different brands, we expect that we'll be adding new features and storage capabilities over time.  Subscribe to the project feeds and watch these pages for updates.
 
