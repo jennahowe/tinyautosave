@@ -36,7 +36,28 @@ tinyMCE.init({
 *tinyautosave_showsaveprogress* - _Boolean, default = *true*_
   When true, the toolbar button will show a brief animation every time an autosave occurs.
 
-==Public properties==
+==Public properties and methods==
+
+The following two sections describe the properties and methods of the !TinyAutoSave plugin that can be read, set, and called by your own !JavaScript code.
+
+Your !JavaScript code interacts with the !TinyAutoSave plugin "instance" that is created by TinyMCE.  They are not static properties and methods.  One instance of the plugin is created for each editor displayed on the page.  (This is how all plugins work.)
+
+If your code will interact with a !TinyAutoSave plugin instance multiple times on the same page, it may be convenient to use the `tinyautosave_oninit` configuration option (see above) in order to save a reference to the plugin instance.  When the function you specify in `tinyautosave_oninit` is invoked, the value of `this` will be the plugin instance, so you can easily save a reference to it with a line of code such as:
+{{{
+var tinyautosave = this;
+}}}
+Or, save the reference in a global variable:
+{{{
+window.tinyautosave = this;
+}}}
+Once you have a reference to the plugin, you can interact with it in any way you see fit, setting public properties and calling public methods.  For example:
+{{{
+tinyautosave.setProgressImage("/images/spinner.gif");
+tinyautosave.progressDisplayTime = 900;
+}}}
+Below, you can find a complete list of the public properties that you can read and set, and the public methods you can call.
+
+===Public properties===
 
 *onPreSave* - _String, default = *null*_
   When set to the name of a function, that function will be called just before each auto-save occurs. The context of the function (the value of `this`) is set to the editor instance. The function must return a Boolean value indicating if the auto-save is to proceed normally (`true`) or be canceled (`false`).
@@ -55,7 +76,7 @@ tinyMCE.init({
 *showSaveProgress* - _Boolean, default = *true*_
   When `true`, the toolbar button will show a brief animation every time an autosave occurs. This property is initially set to the value of the `tinyautosave_showsaveprogress` configuration option, but this property allows the animation to be controlled dynamically.
 
-==Public methods==
+===Public methods===
 
 *init()* - Arguments: _Editor instance (Object), URL of plugin folder (String);_ Return value: _none_
   Called by TinyMCE to initialize the plugin.
