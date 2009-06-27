@@ -41,7 +41,7 @@ Even with the to-be-determined rules for expiring old content, it is clear that 
 
 _*Supported by:* Internet Explorer 5+_
 
-`UserData` is an under-exploited feature of Internet Explorer, which has been available since version 5.  Because Internet Explorer represents such a large percetage of installed Web browsers, the existence of `UserData` ensures that most users have a safe and secure storage method for their auto-saved content.
+`UserData` is an under-exploited feature of Internet Explorer, which has been available since version 5.  Because Internet Explorer represents such a large percentage of installed Web browsers, the existence of `UserData` ensures that most users have a safe and secure storage method for their auto-saved content.
 
 Incidentally, `UserData` is the way Windows Update is able to maintain its data across browser restarts, so if it works so well with Windows Update, it is perfect for our purposes too.
 
