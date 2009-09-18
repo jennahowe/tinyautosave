@@ -1,12 +1,12 @@
 /*
 	TinyAutoSave plugin for TinyMCE
-	Version: 2.0
+	Version: 2.0.1
 	http://tinyautosave.googlecode.com/
 
 	Copyright (c) 2008-2009 Todd Northrop
 	http://www.speednet.biz/
 	
-	September 17, 2009
+	September 18, 2009
 
 	Adds auto-save capability to the TinyMCE text editor to rescue content
 	inadvertently lost.
@@ -34,8 +34,8 @@
 
 	//************************************************************************
 	// PRIVATE VARIABLES
-		
-	var version = "2.0",
+	
+	var version = "2.0.1",
 	
 		// The name of the plugin, as specified to TinyMCE
 		pluginName = "tinyautosave",
@@ -373,9 +373,9 @@
 			s.timer = window.setInterval(s.saveDelegate, s.intervalSeconds * 1000);
 			
 			// Ensures content is autosaved before window closes or navigates to new page
-			tinymce.dom.Event.add(window, "beforeunload", s.saveFinalDelegate);
+			tinymce.dom.Event.add(window, "unload", s.saveFinalDelegate);
 
-			// Save when editor is removed (may be different than window's onbeforeunload event, so we need to do both)
+			// Save when editor is removed (may be different than window's onunload event, so we need to do both)
 			ed.onRemove.add(s.saveFinalDelegate);
 			
 			// Set initial state of restore button
@@ -490,7 +490,7 @@
 			///		"[tinymce]/plugins/tinyautosave/images/progress.gif". Can be set any time
 			///		after the plugin initializes. The progress image is normally an animated GIF,
 			///		but it can be any image type. Because the image will be displayed on a toolbar
-			///		button, so the recommended size is 16 x 16.
+			///		button, so the recommended size is 20 x 20 (using a centered 16 x 16 image).
 			/// </summary>
 			/// <param name="url" type="String" optional="false" mayBeNull="false">
 			///		The URL of the image that will be displayed on the restore toolbar button
@@ -523,7 +523,7 @@
 			window.clearInterval(s.timer);
 		}
 		
-		tinymce.dom.Event.remove(window, "beforeunload", s.saveFinalDelegate);
+		tinymce.dom.Event.remove(window, "unload", s.saveFinalDelegate);
 		t.editor.onRemove.remove(s.saveFinalDelegate);
 		removeInstanceSettings(t);
 	}
@@ -536,7 +536,7 @@
 		/// <remarks>
 		///		Must be called with context ("this" keyword) set to plugin instance
 		/// </remarks>
-
+		
 		var s = getInstanceSettings(this);
 		
 		s.saveDelegate();
