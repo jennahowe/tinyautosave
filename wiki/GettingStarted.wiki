@@ -25,6 +25,8 @@ tinyMCE.init({
 
 ==Plugin options==
 
+*tinyautosave_key* - _String, default = *editor id*_
+  A string value used to identify the autosave storage and settings to use for the plug instance. If tinyautosave_key is not specified, then the editor's id property is used. If you set the tinyautosave_key for all editors to the same value, that would create a single autosave storage instance and a single set of autosave settings to use with all editors. Because each key maintains its own plugin settings, tinyautosave_key can also be used to apply a different UI or behavior to individual editors. For example, two editors on the same page could use different progress images, or they could autosave at different intervals.
 *tinyautosave_interval_seconds* - _Number, default = *60*_
   The number of seconds between automatic saves.  When the editor is first displayed, an autosave will not occur for at least this amount of time.  This option can also be specified as *tinyautosave_interval*.
 *tinyautosave_retention_minutes* - _Number, default = *20*_
@@ -59,6 +61,12 @@ Below, you can find a complete list of the public properties that you can read a
 
 ===Public properties===
 
+*editor* - _Object_
+  A reference to the TinyMCE editor instance that contains this TinyAutoSave plugin instance.
+*url* - _String_
+  The URL of the folder containing the TinyAutoSave plugin. Does not include a trailing slash.
+*key* - _String, default = *editor id*_
+  A string value identifying the storage and settings for the plugin, as set by `tinyautosave_key`. Contains the editor id if not specified.
 *onPreSave* - _String, default = *null*_
   When set to the name of a function, that function will be called just before each auto-save occurs. The context of the function (the value of `this`) is set to the editor instance. The function must return a Boolean value indicating if the auto-save is to proceed normally (`true`) or be canceled (`false`).
 *onPostSave* - _String, default = *null*_
