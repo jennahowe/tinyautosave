@@ -27,6 +27,8 @@ The HTML 5 specification states that the Web browser will never automatically ex
 
 At the time of this writing, *IE8* is the only Web browser to fully support `localStorage`, without any glitches.
 
+Note that IE8 seems to lose localStorage support (and reverts back to the UserData method) if the page is being opened on a local PC (not served from a Web server).
+
 ===Method 2: `sessionStorage`===
 
 _*Supported by:* Firefox 3, Safari 3.2(?)_
