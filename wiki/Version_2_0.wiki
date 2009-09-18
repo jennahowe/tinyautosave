@@ -12,6 +12,8 @@ Changed files:
   * demo.htm (new)
   * tinyautosave/editor_plugin.js
   * tinyautosave/editor_plugin_src.js
+  * tinyautosave/images/restore.gif
+  * tinyautosave/images/restore.png
   * tinymce/ (folder/new)
 
 ==What's new==
