@@ -25,7 +25,7 @@ Changed files:
 
 ==What's new==
 
-Changed hooked event to window.onunload (from window.onbeforeunload).  window.onunload is a W3C standard DOM event, and window.onbeforeonload is not.  Also, Opera does not support window.onbeforeonload.
+Changed hooked event to `window.onunload` (from `window.onbeforeunload`).  `window.onunload` is a W3C standard DOM event, and `window.onbeforeonload` is not.  Also, Opera does not support `window.onbeforeonload`.
 
 Updated all progress images (animated GIFs) to 20x20 so they will no longer be distored when displayed on a TinyMCE toolbar button.
 
