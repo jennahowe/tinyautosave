@@ -1,7 +1,8 @@
 TinyAutoSave plug-in for TinyMCE
-by Speednet Group
-Copyright © 2008-2009 Speednet Group LLC. All rights reserved.
-Last updated Jan. 18, 2009
+Copyright (c) 2008-2009 Todd Northrop
+
+ReadMe
+Last updated Sep. 17, 2009
 
 Automatically saves the editor contents periodically and just before
 leaving the current page.  Allows the user to rescue the contents of
@@ -38,6 +39,18 @@ TinyMCE Commands
 ____________________________
 Configuration Options
 
+	tinyautosave_key - (String, default = editor id) A string value used to
+		identify the autosave storage and settings to use for the plugin
+		instance. If tinyautosave_key is not specified, then the editor's id
+		property is used. If you set the tinyautosave_key for all editors to
+		the same value, that would create a single autosave storage instance
+		and a single set of autosave settings to use with all editors.
+		Because each key maintains its own plugin settings, tinyautosave_key
+		can also be used to apply a different UI or behavior to individual
+		editors. For example, two editors on the same page could use
+		different progress images, or they could autosave at different
+		intervals.
+
 	tinyautosave_interval_seconds - (Number, default = 60) The number of
 		seconds between automatic saves.  When the editor is first displayed,
 		an autosave will not occur for at least this amount of time.
@@ -69,6 +82,14 @@ Configuration Options
 ____________________________
 Public Properties
 
+	editor - (Object) TinyMCE editor instance to which the plugin instance
+		is attached.
+		
+	url - (String) The base URL of the plugin.
+	
+	key - (String) The value passed in the tinyautosave_key setting (or the
+		editor id if nothing passed).
+	
 	onPreSave - (String, default = null) When set to the name of a function,
 		that function will be called just before each auto-save occurs. The
 		context of the function (the value of 'this') is set to the editor
