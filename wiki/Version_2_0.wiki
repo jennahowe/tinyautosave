@@ -1,5 +1,5 @@
 #summary Version 2.0 release notes.
-#labels Featured,Notes
+#labels Notes
 
 =Version 2.0 release notes=
 
