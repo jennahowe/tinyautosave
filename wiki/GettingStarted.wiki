@@ -67,18 +67,18 @@ Below, you can find a complete list of the public properties that you can read a
   The URL of the folder containing the TinyAutoSave plugin. Does not include a trailing slash.
 *key* - _String, default = *editor id*_
   A string value identifying the storage and settings for the plugin, as set by `tinyautosave_key`. Contains the editor id if not specified.
-*onPreSave* - _String, default = *null*_
-  When set to the name of a function, that function will be called just before each auto-save occurs. The context of the function (the value of `this`) is set to the editor instance. The function must return a Boolean value indicating if the auto-save is to proceed normally (`true`) or be canceled (`false`).
-*onPostSave* - _String, default = *null*_
-  When set to the name of a function, that function will be called just after each auto-save occurs. The context of the function (the value of `this`) is set to the editor instance. Any return value from the function is ignored.
-*onSaveError* - _String, default = *null*_
-  When set to the name of a function, that function will be called every time an error occurs during an auto-save operation. The context of the function (the value of `this`) is set to the editor instance. Any return value from the function is ignored.
-*onPreRestore* - _String, default = *null*_
-  When set to the name of a function, that function will be called just before each restore request is carried out. The context of the function (the value of `this`) is set to the editor instance. The function must return a Boolean value indicating if the restore is to proceed normally (`true`) or be canceled (`false`).
-*onPostRestore* - _String, default = *null*_
-  When set to the name of a function, that function will be called just after each restore request is carried out. The context of the function (the value of `this`) is set to the editor instance. Any return value from the function is ignored.
-*onRestoreError* - _String, default = *null*_
-  When set to the name of a function, that function will be called every time an error occurs during a restore operation. The context of the function (the value of `this`) is set to the editor instance. Any return value from the function is ignored.
+*onPreSave* - _String_ or _Function, default = *null*_
+  Can be set to the name of a function (String type) or to a function (Function type) that will be called just before each auto-save occurs. The context of the function (the value of `this`) is set to the editor instance. The function must return a Boolean value indicating if the auto-save is to proceed normally (`true`) or be canceled (`false`).
+*onPostSave* - _String_ or _Function, default = *null*_
+  Can be set to the name of a function (String type) or to a function (Function type) that will be called just after each auto-save occurs. The context of the function (the value of `this`) is set to the editor instance. Any return value from the function is ignored.
+*onSaveError* - _String_ or _Function, default = *null*_
+  Can be set to the name of a function (String type) or to a function (Function type) that will be called every time an error occurs during an auto-save operation. The context of the function (the value of `this`) is set to the editor instance. Any return value from the function is ignored.
+*onPreRestore* - _String_ or _Function, default = *null*_
+  Can be set to the name of a function (String type) or to a function (Function type) that will be called just before each restore request is carried out. The context of the function (the value of `this`) is set to the editor instance. The function must return a Boolean value indicating if the restore is to proceed normally (`true`) or be canceled (`false`).
+*onPostRestore* - _String_ or _Function, default = *null*_
+  Can be set to the name of a function (String type) or to a function (Function type) that will be called just after each restore request is carried out. The context of the function (the value of `this`) is set to the editor instance. Any return value from the function is ignored.
+*onRestoreError* - _String_ or _Function, default = *null*_
+  Can be set to the name of a function (String type) or to a function (Function type) that will be called every time an error occurs during a restore operation. The context of the function (the value of `this`) is set to the editor instance. Any return value from the function is ignored.
 *progressDisplayTime* - _Number, default = *1200*_
   Number of milliseconds that the progress image is displayed after an auto-save.  The default of 1200 is the equivalent of 1.2 seconds.
 *showSaveProgress* - _Boolean, default = *true*_
