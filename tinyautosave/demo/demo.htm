@@ -3,17 +3,33 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
-	<title>TinyAutoSave 2.0 Demo</title>
+	<title>TinyAutoSave 2.1 Demo</title>
 
 	<script type="text/javascript" src="tinymce/tiny_mce.js"></script>
 	<script type="text/javascript" src="tinymce/plugins/tinyautosave/editor_plugin.js"></script>
 	<script type="text/javascript">
 		tinyMCE.init({
-			mode : "textareas",
-			theme : "advanced",
-			plugins : "tinyautosave",
-			theme_advanced_buttons1_add_before : "tinyautosave" 
+			mode: "textareas",
+			theme: "advanced",
+			plugins: "tinyautosave",
+			theme_advanced_buttons1_add_before: "tinyautosave",
+			tinyautosave_oninit: "configAutoSave"
 		});
+		
+		function configAutoSave() {
+			if (this.id == "ed1") {
+				this.onPreSave = "ed1PreSave";  // Assigned with string
+			}
+			else if (this.id == "ed2") {
+				this.onPostSave = function () {  // Assigned with function
+					alert("onPostSave occurred in Editor 2.");
+				};
+			}
+		}
+		
+		function ed1PreSave() {
+			return confirm("onPreSave occurred in Editor 1. Do you want to continue with the autosave?");
+		}
 		
 		function randomChars() {
 			var c = 'a'.charCodeAt(0);
@@ -38,7 +54,7 @@
 <body>
 
 	<h1>TinyAutoSave Plugin</h1>
-	<h2>v 2.0</h2>
+	<h2>v 2.1</h2>
 
 	<p>This demonstrates the ability to have two distinct autosave storage spaces on the same page.</p>
 	<ol>
