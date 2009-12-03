@@ -1,12 +1,12 @@
 /*
 	TinyAutoSave plugin for TinyMCE
-	Version: 2.1
+	Version: 2.1.1
 	http://tinyautosave.googlecode.com/
 
 	Copyright (c) 2008-2009 Todd Northrop
 	http://www.speednet.biz/
 	
-	November 19, 2009
+	December 3, 2009
 
 	Adds auto-save capability to the TinyMCE text editor to rescue content
 	inadvertently lost.
@@ -35,7 +35,7 @@
 	//************************************************************************
 	// PRIVATE VARIABLES
 	
-	var version = "2.1",
+	var version = "2.1.1",
 	
 		// The name of the plugin, as specified to TinyMCE
 		pluginName = "tinyautosave",
@@ -81,6 +81,7 @@
 			intervalSeconds: 60,
 			retentionMinutes: 20,
 			minSaveLength: 50,
+			askBeforeUnload: false,
 			canRestore: false,
 			busy: false,
 			timer: null
@@ -253,7 +254,7 @@
 		/// on the client computer. Data stored in the localStorage area has no expiration date, so we must
 		/// manage expiring the data ourselves.  localStorage is fully supported by IE8, and it is supposed
 		/// to be working in Firefox 3 and Safari 3.2, but in reality is is flaky in those browsers.  As
-		/// HTML 5 gets wider support, the TinyAutoSave plugin will use it automatically. In Windows Vista,
+		/// HTML 5 gets wider support, the TinyAutoSave plugin will use it automatically. In Windows Vista/7,
 		/// localStorage is stored in the following folder:
 		/// C:\Users\[username]\AppData\Local\Microsoft\Internet Explorer\DOMStore\[tempFolder]
 		/// 
@@ -359,6 +360,7 @@
 			// Boolean value.  If not specified in config, default is true, progress animation will be displayed after each auto-save.
 			// Specified as 'tinyautosave_showsaveprogress' in the config.
 			t.showSaveProgress = ed.getParam(pluginName + "_showsaveprogress", t.showSaveProgress);
+			s.askBeforeUnload = ed.getParam(pluginName + "_ask_beforeunload", s.askBeforeUnload);
 			
 			s.canRestore = t.hasSavedContent();
 			
@@ -403,6 +405,11 @@
 				if (is(f, "function")) {
 					f.apply(t);
 				}
+			}
+
+			// Add ask before unload dialog
+			if (s.askBeforeUnload) {
+				tinymce.dom.Event.add(window, "unload", tinymce.plugins.AutoSavePlugin._beforeUnloadHandler);
 			}
 		},
 		
@@ -509,6 +516,26 @@
 			if (tinymce.is(url, "string")) {
 				preloadImage(getInstanceSettings(this).progressImage = url);
 			}
+		},
+
+		"static": {
+			_beforeUnloadHandler: function () {
+				var msg;
+
+				tinymce.each(tinyMCE.editors, function (ed) {
+
+					if (ed.getParam("fullscreen_is_enabled")) {
+						return;
+					}
+
+					if (ed.isDirty()) {
+						msg = ed.getLang("autosave.unload_msg");
+						return false;
+					}
+				});
+
+				return msg;
+			}
 		}
 	});
 	
@@ -533,6 +560,11 @@
 		}
 		
 		tinymce.dom.Event.remove(window, "unload", s.saveFinalDelegate);
+		
+		if (s.askBeforeUnload) {
+			tinymce.dom.Event.remove(window, "unload", tinymce.plugins.AutoSavePlugin._beforeUnloadHandler);
+		}
+		
 		t.editor.onRemove.remove(s.saveFinalDelegate);
 		removeInstanceSettings(t);
 	}
@@ -653,16 +685,20 @@
 					
 					if (t.showSaveProgress) {
 						b = tinymce.DOM.get(cm.get(pluginName).id);
-						img = s.restoreImage;
 						
-						b.firstChild.src = s.progressImage;
-						
-						window.setTimeout(
-							function () {
-								b.firstChild.src = img;
-							},
-							Math.min(t.progressDisplayTime, s.intervalSeconds * 1000 - 100)
-						);
+						if (b) {
+							img = s.restoreImage;
+							
+							b.firstChild.src = s.progressImage;
+							
+							window.setTimeout(
+								function () {
+									b.firstChild.src = img;
+								},
+	
+								Math.min(t.progressDisplayTime, s.intervalSeconds * 1000 - 100)
+							);
+						}
 					}
 	
 					execCallback.call(t, t.onPostSave);
