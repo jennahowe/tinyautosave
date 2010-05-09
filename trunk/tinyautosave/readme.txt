@@ -1,8 +1,8 @@
 TinyAutoSave plug-in for TinyMCE
-Copyright (c) 2008-2009 Todd Northrop
+Copyright (c) 2008-2010 Todd Northrop
 
 ReadMe
-Last updated Sep. 17, 2009
+Last updated May 9, 2010
 
 Automatically saves the editor contents periodically and just before
 leaving the current page.  Allows the user to rescue the contents of
@@ -10,8 +10,8 @@ the last auto-save, in case they did not intend to navigate away from
 the current page or the browser window was closed before posting the
 content.
 
-Released under the terms of the GNU General Public License version 3.
-See license.txt in the project root for details.
+Dual licensed under the MIT or GPL Version 2 licenses.
+See mit-license.txt and gpl2-license.txt in the project root for details.
 
 See changelog.txt for a summary of changes to the project.
 
