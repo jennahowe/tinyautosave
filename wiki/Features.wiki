@@ -18,4 +18,4 @@
   * Simple to configure a different animation, including your own, and control how long the animation displays.
   * Preloads the animation so it's instantly available the first time needed.
   * Minified plugin file shrinks variable names for smallest download.
-  * Released under GNU General Public License, version 3.
+  * Dual-licensed under the MIT or GNU General Public License, version 2 (GPL2).

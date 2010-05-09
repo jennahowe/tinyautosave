@@ -1,0 +1,21 @@
+#summary Version 2.1.2 release notes.
+#labels Featured,Notes
+
+=Version 2.1.2 release notes=
+
+This release changed the licensing model from GPL3 to dual-licensed under MIT or GPL2.  The copyright banners were also updated.
+
+Changed files:
+
+  * changelog.txt
+  * license.txt (removed)
+  * gpl2-license.txt (new)
+  * mit-license.txt (new)
+  * readme.txt
+  * tinyautosave/editor_plugin.js
+  * tinyautosave/editor_plugin_src.js
+  * demo/demo.htm
+
+==Download==
+
+You can grab version 2.1.2 on the [http://code.google.com/p/tinyautosave/downloads/list Downloads] page.
