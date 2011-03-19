@@ -1,12 +1,12 @@
 /*
 	TinyAutoSave plugin for TinyMCE
-	Version: 2.1.2
+	Version: 2.1.3
 	http://tinyautosave.googlecode.com/
 
-	Copyright (c) 2008-2010 Todd Northrop
+	Copyright (c) 2008-2011 Todd Northrop
 	http://www.speednet.biz/
 	
-	May 9, 2010
+	March 19, 2011
 
 	Adds auto-save capability to the TinyMCE text editor to rescue content
 	inadvertently lost.
@@ -25,7 +25,7 @@
 	//************************************************************************
 	// PRIVATE VARIABLES
 	
-	var version = "2.1.2",
+	var version = "2.1.3",
 	
 		// The name of the plugin, as specified to TinyMCE
 		pluginName = "tinyautosave",
@@ -311,15 +311,6 @@
 				resolve = tinymce.resolve,
 				s, onInit, f;
 
-			if (useUserData) {
-				
-				if (!userDataElement) {
-					userDataElement = ed.getElement();
-				}
-				
-				userDataElement.style.behavior = "url('#default#userData')";
-			}
-
 			t.editor = ed;
 			t.id = ed.id;
 			t.url = url;
@@ -352,8 +343,6 @@
 			t.showSaveProgress = ed.getParam(pluginName + "_showsaveprogress", t.showSaveProgress);
 			s.askBeforeUnload = ed.getParam(pluginName + "_ask_beforeunload", s.askBeforeUnload);
 			
-			s.canRestore = t.hasSavedContent();
-			
 			// Save action delegates with context
 			s.saveDelegate = createDelegate(t, save);
 			s.saveFinalDelegate = createDelegate(t, saveFinal);
@@ -379,28 +368,40 @@
 			// Save when editor is removed (may be different than window's onunload event, so we need to do both)
 			ed.onRemove.add(s.saveFinalDelegate);
 			
-			// Set initial state of restore button
-			ed.onPostRender.add(function (ed, cm) {
-				ed.controlManager.setDisabled(pluginName, !s.canRestore);
-			});
-			
-			// Call tinyautosave_oninit, if specified
-			// This config option is a String value specifying the name of a function to call. Can include dot-notation, e.g., "myObject.myFunction".
-			// The context of the function call (the value of 'this') is the plugin instance.
-			onInit = ed.getParam(pluginName + "_oninit", null);
-			
-			if (is(onInit, "string")) {
-				f = resolve(onInit);
-				
-				if (is(f, "function")) {
-					f.apply(t);
-				}
-			}
-
 			// Add ask before unload dialog
 			if (s.askBeforeUnload) {
 				tinymce.dom.Event.add(window, "unload", tinymce.plugins.AutoSavePlugin._beforeUnloadHandler);
 			}
+
+			ed.onInit.add(function() {
+
+				if (useUserData) {
+				
+					if (!userDataElement) {
+						userDataElement = ed.getElement();
+					}
+				
+					userDataElement.style.behavior = "url('#default#userData')";
+				}
+
+				s.canRestore = t.hasSavedContent();
+			
+				// Call tinyautosave_oninit, if specified
+				// This config option is a String value specifying the name of a function to call. Can include dot-notation, e.g., "myObject.myFunction".
+				// The context of the function call (the value of 'this') is the plugin instance.
+				onInit = ed.getParam(pluginName + "_oninit", null);
+			
+				if (is(onInit, "string")) {
+					f = resolve(onInit);
+				
+					if (is(f, "function")) {
+						f.apply(t);
+					}
+				}
+			
+				// Set initial state of restore button
+				ed.controlManager.setDisabled(pluginName, !s.canRestore);
+			});
 		},
 		
 		getInfo: function() {
