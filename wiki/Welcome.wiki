@@ -17,5 +17,5 @@ The sidebar area to the left includes links to all the important wiki pages, inc
   A detailed look at precisely how the plugin works, from a user's perspective.  Includes descriptions of the auto-save process, rescuing lost content, and clearing the auto-save storage area.
 [Technology]
   A discussion of the technology used in the plugin.  For developers interested in storing data on a client PC this is a must-read section, highlighting design decisions, prioritization of storage methods, and browser support.  After downloading, developers are also encourage to review the extensive documentation provided within the code itself.
-[http://code.google.com/p/tinyautosave/downloads/list/ Downloads]
+[http://code.google.com/p/tinyautosave/downloads/list Downloads]
   Grab the latest release of the !TinyAutoSave plugin.  We'll also maintain a history of releases and any other miscellaneous files that make sense.
