@@ -1,0 +1,17 @@
+#summary Version 2.1.3 release notes.
+#labels Featured,Notes
+
+=Version 2.1.3 release notes=
+
+Updated the plugin to work with TinyMCE 3.4, which introduced internal changes that broke the plugin with IE6 and IE7 browsers.
+
+Changed files:
+
+  * changelog.txt
+  * tinyautosave/editor_plugin.js
+  * tinyautosave/editor_plugin_src.js
+  * demo/demo.htm
+
+==Download==
+
+You can grab version 2.1.3 on the [http://code.google.com/p/tinyautosave/downloads/list Downloads] page.
