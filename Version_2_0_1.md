@@ -1,0 +1,31 @@
+# Version 2.0.1 release notes #
+
+This release adds minor enhancements to the TinyAutoSave plugin.
+
+Changed files:
+
+  * changelog.txt
+  * tinyautosave/editor\_plugin.js
+  * tinyautosave/editor\_plugin\_src.js
+  * tinyautosave/images/progress.gif
+  * tinyautosave/images/progress2.gif
+  * tinyautosave/images/progress3.gif
+  * tinyautosave/images/progress4.gif
+  * tinyautosave/images/progress5.gif
+  * tinyautosave/images/progress6.gif
+  * tinyautosave/images/progress7.gif
+  * tinyautosave/images/progress8.gif
+  * tinyautosave/images/progress9.gif
+  * tinyautosave/images/progress10.gif
+  * tinyautosave/images/progress11.gif
+  * tinyautosave/images/progress12.gif
+
+## What's new ##
+
+Changed hooked event to `window.onunload` (from `window.onbeforeunload`).  `window.onunload` is a W3C standard DOM event, and `window.onbeforeonload` is not.  Also, Opera does not support `window.onbeforeonload`.
+
+Updated all progress images (animated GIFs) to 20x20 so they will no longer be distored when displayed on a TinyMCE toolbar button.
+
+## Download ##
+
+You can grab version 2.0.1 on the [Downloads](http://code.google.com/p/tinyautosave/downloads/list) page.

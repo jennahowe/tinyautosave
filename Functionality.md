@@ -1,0 +1,64 @@
+From the user's perspective, the TinyAutoSave plugin does two things:
+
+  1. Automatically saves the editor contents to a safe (yet undisclosed) location
+  1. Allows the last-saved content to be instantly retrieved by clicking the Restore button
+
+To most effectively accomplish these two things, the behavior of the plugin was designed to:
+
+  * Have the most simple interface possible
+  * Be quiet and unobtrusive
+  * Not burden the user with knowledge or decisions about the storage of content
+  * Provide confirmation that their content is safe
+
+## Auto-saving content ##
+
+There are two built-in triggers of auto-saves:  a periodic save schedule and a last-second save that occurs just before exiting the page.
+
+#### Minimum length must be met ####
+
+For both types of saves, the editor must contain at least a certain number of characters, or else the save will not occur.  Initially, the minimum number of characters is 50, but that can be overridden by specifying the `tinyautosave_minlength` configuration option.
+
+Using a minimum number of characters is important because it protects against the user having their auto-saved content overwritten by empty text if they open a new editor page and it auto-saves before they have a chance to click Restore.  It is possible to set `tinyautosave_minlength` to 0 (zero), but it is not recommended.
+
+#### Scheduled auto-saves ####
+
+By default, the plugin auto-saves the editor content every 60 seconds.  This schedule can be altered to any number of seconds by specifying the `tinyautosave_interval_seconds` configuration option.  (The plugin also accepts the configuration option as `tinyautosave_interval`, but using the longer version of the option name will self-document the fact that the numeric value specified is seconds.)
+
+When an auto-save occurs, the toolbar button briefly animates and then becomes enabled (clickable), giving the user confidence that their content is secure.  However, the subtle animation can be disabled by setting the `tinyautosave_showsaveprogress` configuration option to `false`.
+
+#### Saves just before page closes ####
+
+In addition to the scheduled auto-saves, the TinyAutoSave plugin also saves the editor contents just before the page exits in some manner.   This is the most important save-point, because it is the point at which an accidental keystroke normally destroys the editor contents.
+
+No matter how the user exits the page, the save will occur, including:
+
+  * Clicking the browser's Refresh/Reload button
+  * Clicking the Submit button on the page
+  * Navigating to a link on the page
+  * Closing the Web browser
+
+## Restoring saved content ##
+
+The rescuing of lost content is where this plugin earns its stripes.  It is accomplished by simply clicking the Restore button on the toolbar.
+
+![http://tinyautosave.googlecode.com/svn/wiki/images/tinyautosave-restore.png](http://tinyautosave.googlecode.com/svn/wiki/images/tinyautosave-restore.png)
+
+The button is only enabled when there is content available for restoring.  Otherwise it is dimmed/grayed-out.
+
+When the user clicks the Restore button, the plugin checks to see what is currently in the editor that will be replaced.  If the editor is either empty or contains only whitespace and/or empty paragraphs, then the content is restored instantly.  If the editor contains any other content, the user is warned that their current content will be replaced, and they are given the option to abort the restore.
+
+The restore function adds to the undo buffer, so the user is able to undo the restore if they wish.
+
+## Clearing auto-saved content ##
+
+Content saved in the auto-save storage will be deleted on its own when its retention time expires.  (See the `tinyautosave_retention_minutes` option in [Getting Started](http://code.google.com/p/tinyautosave/wiki/GettingStarted).)
+
+The plugin also a public method named `clear()`, which can be called from your own JavaScript code.  When the method is called, any content currently stored in the auto-save storage will be deleted immediately and the Restore toolbar button will be disabled.  (Naturally, the button will be re-enabled once the next auto-save occurs.)
+
+Depending on the type of browser that is being used, the user also has some control over clearing the auto-save storage.
+
+If their Web browser uses cookies for the auto-save storage, then clearing the auto-saved content is as simple as deleting the cookies.
+
+However, the majority of Web browsers do not use cookies for the auto-save storage, so the user may or may not have the ability to clear the auto-saved content, depending on their Web browser's abilities.
+
+(See [Technology](Technology.md) for a discussion of how different Web browsers store the auto-saved content.)

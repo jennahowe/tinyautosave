@@ -1,0 +1,67 @@
+## Technology used in the TinyAutoSave plugin ##
+
+The TinyAutoSave plugin uses the very latest technology available to store auto-saved content enitrely on the user's computer, in an attempt to exactly replicate the editor contents, no matter how large and complex the content is.
+
+Generally speaking, Web browsers are not highly-regarded for their ability to store content locally on a user's computer.  In fact, you might say they are traditionally very poor at it, with the only mainstream technology being cookies -- which are fragile, under-sized, and unpredictable.
+
+However, there are other ways of storing content on a client computer that are relatively unknown among developers, probably because they are proprietary, and thus not good cross-browser solutions.
+
+For the purposes of the TinyAutoSave plugin, these proprietary methods were stitched together in a prioritized "pecking order", using cookies as a fall-back plan if all other methods are not available in a particular Web browser.
+
+The result is that some Web browsers, such as IE8 and Firefox 3, are able to store **megabytes** of content on the user's PC -- as opposed to browsers that are forced to use cookies, which can only store about 4,000 bytes of content.
+
+### Method 1: `localStorage` ###
+
+_**Supported by:** Internet Explorer 8_
+
+The highest priority storage method is a new feature of HTML 5 called `localStorage`. (See http://www.w3.org/TR/html5/structured.html#localstorage).
+
+Because HTML 5 is still in a draft stage, it does not yet have widespread support among mainstream Web browsers, but the `localStorage` specification has remained quite stable for some time.
+
+The specification does not mandate a specific amount of storage space available for each domain, and in fact Web browsers will probably allow users to customize it to their liking, but an emerging standard appears to be approxmately 10MB per domain as the default available space.
+
+The HTML 5 specification states that the Web browser will never automatically expire the content, which makes it perfect for ensuring the viability of the auto-saved content, but it also means we must manage the expiring of content ourselves.
+
+At the time of this writing, **IE8** is the only Web browser to fully support `localStorage`, without any glitches.
+
+Note that IE8 seems to lose localStorage support (and reverts back to the UserData method) if the page is being opened on a local PC (not served from a Web server).
+
+### Method 2: `sessionStorage` ###
+
+_**Supported by:** Firefox 3, Safari 3.2(?)_
+
+Like `localStorage`, this method of storage is a new feature of HTML 5.  (See http://www.w3.org/TR/html5/structured.html#sessionstorage)  It functions in exactly the same way as `localStorage`, except the content expires at some point.
+
+Unfortunately, the HTML 5 specification does not have a clear set of rules for how to expire `sessionStorage` content, using phrases such as, "...the `[`Web browser] _may_ support resuming sessions after a restart."
+
+Even with the to-be-determined rules for expiring old content, it is clear that the ability offered by `sessionStorage` to save large amounts of data in a safe manner outweighs the lack of clarity for expiration of content.  This is further reinforced by the fact that logically speaking, any brand of Web browser capable of doing `sessionStorage`, but not `localStorage` (the first choice), will also not be able to do method #3, so it otherwise would be forced to save the content in dreaded cookies.
+
+### Method 3: `UserData` ###
+
+_**Supported by:** Internet Explorer 5+_
+
+`UserData` is an under-exploited feature of Internet Explorer, which has been available since version 5.  Because Internet Explorer represents such a large percentage of installed Web browsers, the existence of `UserData` ensures that most users have a safe and secure storage method for their auto-saved content.
+
+Incidentally, `UserData` is the way Windows Update is able to maintain its data across browser restarts, so if it works so well with Windows Update, it is perfect for our purposes too.
+
+This storage method is able to save up to 128K of data per "document", or up to 1MB of data per domain, on the client computer.  Because the feature is available for IE 5+, it is available for every version of IE supported by TinyMCE.
+
+The content is persistent across browser restarts and expires on the date/time specified, just like a cookie.  However, the data is not cleared when the user clears cookies on the browser, which makes it well-suited for rescuing autosaved content.
+
+`UserData`, like other Microsoft IE browser technologies, is implemented as a behavior attached to a specific DOM object, so in this case we attach the behavior to the same DOM element that the TinyMCE editor instance is attached to.
+
+### Method 4: `Cookies` ###
+
+_**Supported by:** All Web browsers with cookies enabled_
+
+When none of the above methods is available, the autosave content is stored in a
+cookie.  This limits the total saved content to around 4,000 characters, but we use every bit of that space as we can.
+
+To maximize space utilization, before saving the content, we remove all newlines and other control characters less than ASCII code 32, change `&nbsp;` and `&#160;` instances to a regular space character, and do some minor compression techniques.
+
+Unfortunately, because the data is stored in a cookie, we have to waste some space encoding certain characters to avoid server warnings about dangerous content (as well as overcoming some browser bugs in Safari).
+
+Instead of using the built-in `escape()` function, we do a proprietary encoding that only encodes the bare minimum characters, and uses only two bytes per encoded character, rather than 3 bytes per character like `escape()` does.  `escape()` encodes most non-alpha-numeric characters because it is designed for encoding URLs, not for encoding
+cookies.  It is a **huge space-waster** in cookies, and with the TinyAutoSave plugin, using `escape()` would have reduced the amount of auto-saved content to about half of what we are able to achieve with our proprietary encoding scheme.
+
+We have some additional heavy-duty compression code already created that can extend the amount of auto-saved content further, but we're going to wait and see how the light compression fares first.

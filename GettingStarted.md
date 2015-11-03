@@ -1,0 +1,104 @@
+# Getting Started with TinyAutoSave #
+
+## Installation Instructions ##
+
+**1.** Download the `.zip` file containing the plugin.  Copy the `tinyautosave` folder and all contents within it into the TinyMCE `plugins` folder.
+
+**2.** Add the plugin to the TinyMCE plugin option list.  For example:
+> `plugins: "tinyautosave"`
+**3.** Add the button control name to a toolbar row in the theme.  For example:
+> `theme_advanced_buttons1: "tinyautosave,|,cut,copy,paste"`
+
+## Initialization Example ##
+
+```
+tinyMCE.init({
+	theme: "advanced",
+	mode: "textareas",
+	plugins: "tinyautosave",
+	theme_advanced_buttons1_add: "tinyautosave"
+});
+```
+
+## Plugin options ##
+
+**tinyautosave\_key** - _String, default = **editor id**_
+> A string value used to identify the autosave storage and settings to use for the plug instance. If tinyautosave\_key is not specified, then the editor's id property is used. If you set the tinyautosave\_key for all editors to the same value, that would create a single autosave storage instance and a single set of autosave settings to use with all editors. Because each key maintains its own plugin settings, tinyautosave\_key can also be used to apply a different UI or behavior to individual editors. For example, two editors on the same page could use different progress images, or they could autosave at different intervals.
+**tinyautosave\_interval\_seconds** - _Number, default = **60**_
+> The number of seconds between automatic saves.  When the editor is first displayed, an autosave will not occur for at least this amount of time.  This option can also be specified as **tinyautosave\_interval**.
+**tinyautosave\_retention\_minutes** - _Number, default = **20**_
+> The number of minutes since the last autosave that content will remain in the rescue storage space before it is automatically expired.  This option can also be specified as **tinyautosave\_retention**.
+**tinyautosave\_minlength** - _Number, default = **50**_
+> The minimum number of characters that must be in the editor before an autosave will occur.  The character count includes all non-visible characters, such as HTML tags.  Although this can be set to `0` (zero), it is not recommended.  Doing so would open the possibility that if the user accidentally refreshes the page, the empty editor contents would overwrite the rescue content, effectively defeating the purpose of the plugin.
+**tinyautosave\_oninit** - _String, default = **null**_
+> The name of a function to call immediately after the plugin instance is initialized.  Can include dot-notation, e.g., `myObject.myFunction`.  The context of the function call (the value of `this`) is the plugin instance.  This function is a good place to set any of the public properties that you want to configure.
+**tinyautosave\_showsaveprogress** - _Boolean, default = **true**_
+> When true, the toolbar button will show a brief animation every time an autosave occurs.
+
+## Public properties and methods ##
+
+The following two sections describe the properties and methods of the TinyAutoSave plugin that can be read, set, and called by your own JavaScript code.
+
+Your JavaScript code interacts with the TinyAutoSave plugin "instance" that is created by TinyMCE.  They are not static properties and methods.  One instance of the plugin is created for each editor displayed on the page.  (This is how all plugins work.)
+
+If your code will interact with a TinyAutoSave plugin instance multiple times on the same page, it may be convenient to use the `tinyautosave_oninit` configuration option (see above) in order to save a reference to the plugin instance.  When the function you specify in `tinyautosave_oninit` is invoked, the value of `this` will be the plugin instance, so you can easily save a reference to it with a line of code such as:
+```
+var tinyautosave = this;
+```
+Or, save the reference in a global variable:
+```
+window.tinyautosave = this;
+```
+Once you have a reference to the plugin, you can interact with it in any way you see fit, setting public properties and calling public methods.  For example:
+```
+tinyautosave.setProgressImage("/images/spinner.gif");
+tinyautosave.progressDisplayTime = 900;
+```
+Below, you can find a complete list of the public properties that you can read and set, and the public methods you can call.
+
+### Public properties ###
+
+**editor** - _Object_
+> A reference to the TinyMCE editor instance that contains this TinyAutoSave plugin instance.
+**url** - _String_
+> The URL of the folder containing the TinyAutoSave plugin. Does not include a trailing slash.
+**key** - _String, default = **editor id**_
+> A string value identifying the storage and settings for the plugin, as set by `tinyautosave_key`. Contains the editor id if not specified.
+**onPreSave** - _String_ or _Function, default = **null**_
+> Can be set to the name of a function (String type) or to a function (Function type) that will be called just before each auto-save occurs. The context of the function (the value of `this`) is set to the editor instance. The function must return a Boolean value indicating if the auto-save is to proceed normally (`true`) or be canceled (`false`).
+**onPostSave** - _String_ or _Function, default = **null**_
+> Can be set to the name of a function (String type) or to a function (Function type) that will be called just after each auto-save occurs. The context of the function (the value of `this`) is set to the editor instance. Any return value from the function is ignored.
+**onSaveError** - _String_ or _Function, default = **null**_
+> Can be set to the name of a function (String type) or to a function (Function type) that will be called every time an error occurs during an auto-save operation. The context of the function (the value of `this`) is set to the editor instance. Any return value from the function is ignored.
+**onPreRestore** - _String_ or _Function, default = **null**_
+> Can be set to the name of a function (String type) or to a function (Function type) that will be called just before each restore request is carried out. The context of the function (the value of `this`) is set to the editor instance. The function must return a Boolean value indicating if the restore is to proceed normally (`true`) or be canceled (`false`).
+**onPostRestore** - _String_ or _Function, default = **null**_
+> Can be set to the name of a function (String type) or to a function (Function type) that will be called just after each restore request is carried out. The context of the function (the value of `this`) is set to the editor instance. Any return value from the function is ignored.
+**onRestoreError** - _String_ or _Function, default = **null**_
+> Can be set to the name of a function (String type) or to a function (Function type) that will be called every time an error occurs during a restore operation. The context of the function (the value of `this`) is set to the editor instance. Any return value from the function is ignored.
+**progressDisplayTime** - _Number, default = **1200**_
+> Number of milliseconds that the progress image is displayed after an auto-save.  The default of 1200 is the equivalent of 1.2 seconds.
+**showSaveProgress** - _Boolean, default = **true**_
+> When `true`, the toolbar button will show a brief animation every time an autosave occurs. This property is initially set to the value of the `tinyautosave_showsaveprogress` configuration option, but this property allows the animation to be controlled dynamically.
+
+### Public methods ###
+
+**init()** - Arguments: _Editor instance (Object), URL of plugin folder (String);_ Return value: _none_
+> Called by TinyMCE to initialize the plugin.
+**getInfo()** - Arguments: _none;_ Return value: _Information about the plugin (Object)_
+> Called by TinyMCE to retrieve information about the plugin.
+**clear()** - Arguments: _none;_ Return value: _none_
+> Clears any auto-saved content currently stored, and "dims" the Restore toolbar button.
+**hasSavedContent()** - Arguments: _none;_ Return value: _`true` if rescue content is available (Boolean)_
+> Returns true if there is auto-save content available to be restored, or false if not.
+**setProgressImage()** - Arguments: _Image URL (String);_ Return value: _none_
+> Sets the URL of the image that will be displayed every time an auto-save occurs.
+
+## More information ##
+
+For additional in-depth information about TinyAutoSave, please review the following topics.
+
+  * [Overview](Overview.md) - Describes the purpose of the plugin
+  * [Features](Features.md) - Summary of the plugin features
+  * [Functionality](Functionality.md) - Functionality provided by the plugin
+  * [Technology](Technology.md) - A discussion of technology used in the plugin

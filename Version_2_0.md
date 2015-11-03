@@ -1,0 +1,42 @@
+# Version 2.0 release notes #
+
+This release adds the most-requested new feature: independent autosave storage locations/abilitlies.  Each editor can have it's own independent autosave storage, or you can choose to share autosave storage and settings between whichever editors you like.
+
+Changed files:
+
+  * changelog.txt
+  * readme.txt
+  * demo.htm (new)
+  * tinyautosave/editor\_plugin.js
+  * tinyautosave/editor\_plugin\_src.js
+  * tinyautosave/images/restore.gif
+  * tinyautosave/images/restore.png
+  * tinymce/ (folder/new)
+
+## What's new ##
+
+Completely restructured private/public scope, to use true private scope. Prevents pollution of global namespace.
+
+Added new option [tinyautosave\_key](tinyautosave_key.md), a string value that identifies a unique instance of the autosave storage and settings (previously only one global storage space and settings existed).
+
+Multiple autosave storage spaces now exist, including different autosave storage spaces on the same page, if desired.
+
+Changed image dimensions of the png and gif versions of the toolbar button to 20x20, so they won't be distorted.  The progress images are still 16x16.
+
+Reduced the size of minified code by eliminating redundant static strings.
+
+Changed detection of localStorage and sessionStorage to perform and actual storage test. The new Google Chrome 3.0 has a bug that renders the browser incompatible with straight object detection in the last version.
+
+Changed inline comments to be more readable.  Added several new comments for new and changed code.
+
+Added new public property [key](key.md), which holds the value passed with tinyautosave\_key (or the editor id if nothing passed).
+
+Fixed several minor errors with variable names.
+
+Changed UserData code to use a single DOM element for all interaction.
+
+Added demo page and TinyMCE code (latest version)
+
+## Download ##
+
+You can grab version 2.0 on the [Downloads](http://code.google.com/p/tinyautosave/downloads/list) page.

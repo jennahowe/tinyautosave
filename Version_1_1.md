@@ -1,0 +1,33 @@
+# Version 1.1 release notes #
+
+This release adds important stability features to the TinyAutoSave plugin.
+
+Changed files:
+
+  * changelog.txt
+  * readme.txt
+  * tinyautosave/editor\_plugin.js
+  * tinyautosave/editor\_plugin\_src.js
+
+## What's new ##
+
+Added error trapping during save and restore operations. Errors were being trigger during auto-saves in IE6 and IE7 when the total space needed for auto-saves on a page ("document") exceeded 128K.
+
+Added six events to allow extendability:
+
+  * `onPreSave`
+  * `onPostSave`
+  * `onSaveError`
+  * `onPreRestore`
+  * `onPostRestore`
+  * `onRestoreError`
+
+The six events are configured exactly like you would configure a TinyMCE event in your configuration file. They are six String properties, and you set them to the name of the function to call. See readme.txt or the `<field>` definitions in the source code for details.
+
+One interesting use of the events would be in the case that the user tries to save, but the auto-save buffer is full. You can set an onSaveError to clear the current contents of the auto-save area using `<plugin instance>.clear()`, and then retry the auto-save by issuing a `mceTinyAutoSave` command on the editor instance. But you only need to do this kind of thing if users are editing content that regularly exceeds the TinyAutoSave buffer size.
+
+Fixed project page URLs (http://tinyautosave.googlecode.com) and the Speednet Group home page link (http://www.speednet.biz).
+
+## Download ##
+
+You can grab version 1.1 on the [Downloads](http://code.google.com/p/tinyautosave/downloads/list) page.

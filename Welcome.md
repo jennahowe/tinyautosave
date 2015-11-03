@@ -1,0 +1,18 @@
+**Welcome to the wiki pages for the TinyAutoSave plugin!**
+
+Included in these pages you'll find installation instructions, product documentation, descriptive overviews about how the plugin works, a discussion of the technology utilized, and release notes.
+
+The sidebar area to the left includes links to all the important wiki pages, including:
+
+[Overview](Overview.md)
+> Describes the purpose of TinyAutoSave.
+[Features](Features.md)
+> Highlights the key features of the TinyAutoSave plugin in a quick at-a-glance view.
+[Getting Started](GettingStarted.md)
+> When you're ready to install and configure the plugin, this is the page to read.  Covers installation and integration with TinyMCE, as well as a reference of all available configuration options.
+[Functionality](Functionality.md)
+> A detailed look at precisely how the plugin works, from a user's perspective.  Includes descriptions of the auto-save process, rescuing lost content, and clearing the auto-save storage area.
+[Technology](Technology.md)
+> A discussion of the technology used in the plugin.  For developers interested in storing data on a client PC this is a must-read section, highlighting design decisions, prioritization of storage methods, and browser support.  After downloading, developers are also encourage to review the extensive documentation provided within the code itself.
+[Downloads](http://code.google.com/p/tinyautosave/downloads/list)
+> Grab the latest release of the TinyAutoSave plugin.  We'll also maintain a history of releases and any other miscellaneous files that make sense.
